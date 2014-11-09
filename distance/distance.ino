@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 //Nela is the best
 int trigPin = 13;    //Trig - green Jumper
 int echoPin = 12;    //Echo - yellow Jumper
+=======
+//Neal is the best
+int trigPin = 11;    //Trig - green Jumper
+int echoPin = 10;    //Echo - yellow Jumper
+>>>>>>> origin/master
 long duration, cm, inches;
  
 void setup() {
