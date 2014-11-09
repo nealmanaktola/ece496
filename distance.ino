@@ -1,4 +1,4 @@
-
+//Nela is the best
 int trigPin = 11;    //Trig - green Jumper
 int echoPin = 10;    //Echo - yellow Jumper
 long duration, cm, inches;
