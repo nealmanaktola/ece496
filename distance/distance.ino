@@ -1,6 +1,6 @@
 //Nela is the best
-int trigPin = 11;    //Trig - green Jumper
-int echoPin = 10;    //Echo - yellow Jumper
+int trigPin = 13;    //Trig - green Jumper
+int echoPin = 12;    //Echo - yellow Jumper
 long duration, cm, inches;
  
 void setup() {
@@ -21,7 +21,7 @@ void loop()
   delayMicroseconds(5); //why?
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);`
+  digitalWrite(trigPin, LOW);
  
   // Read the signal from the sensor: a HIGH pulse whose
   // duration is the time (in microseconds) from the sending
