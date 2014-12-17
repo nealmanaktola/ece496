@@ -107,11 +107,13 @@ boolean NewPing::ping_trigger() {
 // Timer interrupt ping methods (won't work with ATmega8 and ATmega128)
 // ---------------------------------------------------------------------------
 
-void NewPing::ping_timer(void (*userFunc)(void)) {
+void NewPing::ping_timer_transmitter() {
 	if (!ping_trigger()) return;         // Trigger a ping, if it returns false, return without starting the echo timer.
-	timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
 }
 
+void NewPing::ping_timer_reciever(void (*userFunc)(void)) {
+	timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
+}
  
 boolean NewPing::check_timer() {
 	if (micros() > _max_time) { // Outside the timeout limit.
