@@ -28,6 +28,11 @@ NewPing sonar[SONAR_NUM] = {     // Sensor object array.
 void setup() {
   Serial.begin(115200);
   pingTimer = millis() + 75;           // First ping starts at 75ms, gives time for the Arduino to chill before starting.
+  sonar[0].ping_timer_receiver(echoCheck);
+  sonar[1].ping_timer_receiver(echoCheck);
+  sonar[2].ping_timer_receiver(echoCheck);
+  sonar[3].ping_timer_receiver(echoCheck);
+ 
 }
 
 void loop() {
@@ -35,15 +40,17 @@ void loop() {
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
     pingTimer += PING_INTERVAL;
     sonar[3].ping_timer_transmitter(); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+    Serial.print("sending signal");
   }
 }
 
 void echoCheck() { // If ping received, set the sensor distance to array.
+  Serial.print("in echo check");
   if (sonar[currentSensor].check_timer())
   {
     unsigned int cm = sonar[currentSensor].ping_result / US_ROUNDTRIP_CM;
-    sonar[currentSensor].ping_timer_reciever();
-    Serial.print(i)
+    sonar[currentSensor].ping_timer_receiver(echoCheck);
+    Serial.print(currentSensor);
     Serial.print("=");
     Serial.print("cm ");
   }
