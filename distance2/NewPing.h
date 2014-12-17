@@ -21,7 +21,7 @@
 // new life into these very affordable distance sensors. 
 //
 // FEATURES:
-// * Works with many different ultrasonic sensor models: SR04, SRF05, SRF06, DYP-ME007 & Parallax PING)))™.
+// * Works with many different ultrasonic sensor models: SR04, SRF05, SRF06, DYP-ME007 & Parallax PING)))ï¿½.
 // * Interface with all but the SRF06 sensor using only one Arduino pin.
 // * Doesn't lag for a full second if no ping/echo is received.
 // * Ping sensors consistently and reliably at up to 30 times per second.
@@ -60,7 +60,7 @@
 //   Optimized for smaller compiled size (even smaller than skteches that
 //   don't use a library).
 //
-// 07/14/2012 v1.4 - Added support for the Parallax PING)))™ sensor. Interface
+// 07/14/2012 v1.4 - Added support for the Parallax PING)))ï¿½ sensor. Interface
 //   with all but the SRF06 sensor using only one Arduino pin. You can also
 //   interface with the SRF06 using one pin if you install a 0.1uf capacitor
 //   on the trigger and echo pins of the sensor then tie the trigger pin to
@@ -144,6 +144,7 @@ class NewPing {
 		unsigned long ping_result;
 		static void timer_us(unsigned int frequency, void (*userFunc)(void));
 		static void timer_ms(unsigned long frequency, void (*userFunc)(void));
+                static void timer_setup();
 		static void timer_stop();
 	private:
 		boolean ping_trigger();
@@ -155,7 +156,6 @@ class NewPing {
 		volatile uint8_t *_echoInput;
 		unsigned int _maxEchoTime;
 		unsigned long _max_time;
-		static void timer_setup();
 		static void timer_ms_cntdwn();
 };
 

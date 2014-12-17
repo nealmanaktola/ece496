@@ -40,18 +40,44 @@ void loop() {
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
     pingTimer += PING_INTERVAL;
     sonar[3].ping_timer_transmitter(); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
-    Serial.print("sending signal");
+
   }
 }
 
 void echoCheck() { // If ping received, set the sensor distance to array.
   Serial.print("in echo check");
-  if (sonar[currentSensor].check_timer())
+  if (sonar[0].check_timer())
   {
-    unsigned int cm = sonar[currentSensor].ping_result / US_ROUNDTRIP_CM;
-    sonar[currentSensor].ping_timer_receiver(echoCheck);
-    Serial.print(currentSensor);
+    unsigned int cm = sonar[0].ping_result / US_ROUNDTRIP_CM;
+    sonar[0].ping_timer_receiver(echoCheck);
+    Serial.print(0);
     Serial.print("=");
     Serial.print("cm ");
   }
+  if (sonar[1].check_timer())
+  {
+    unsigned int cm = sonar[1].ping_result / US_ROUNDTRIP_CM;
+    sonar[1].ping_timer_receiver(echoCheck);
+    Serial.print(1);
+    Serial.print("=");
+    Serial.print("cm ");
+  }
+  if (sonar[2].check_timer())
+  {
+    unsigned int cm = sonar[2].ping_result / US_ROUNDTRIP_CM;
+    sonar[2].ping_timer_receiver(echoCheck);
+    Serial.print(2);
+    Serial.print("=");
+    Serial.print("cm ");
+  }
+  if (sonar[3].check_timer())
+  {
+    unsigned int cm = sonar[3].ping_result / US_ROUNDTRIP_CM;
+    sonar[3].ping_timer_receiver(echoCheck);
+    Serial.print(3);
+    Serial.print("=");
+    Serial.print("cm ");
+  }
+  //NewPing::timer_us(ECHO_TIMER_FREQ, echoCheck);
+  
 }
