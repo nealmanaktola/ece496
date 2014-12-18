@@ -139,7 +139,7 @@ class NewPing {
 		unsigned int convert_in(unsigned int echoTime);
 		unsigned int convert_cm(unsigned int echoTime);
 		void ping_timer_transmitter();
-		void ping_timer_receiver(void (*userFunc)(void));
+		void ping_timer(void (*userFunc)(void));
 		boolean check_timer();
 		unsigned long ping_result;
 		static void timer_us(unsigned int frequency, void (*userFunc)(void));

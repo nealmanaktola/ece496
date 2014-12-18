@@ -40,10 +40,13 @@ void loop() {
       if (i == 0 && currentSensor == SONAR_NUM - 1) oneSensorCycle(); // Sensor ping cycle complete, do something with the results.
       sonar[currentSensor].timer_stop();          // Make sure previous timer is canceled before starting a new ping (insurance).
       currentSensor = i;                          // Sensor being accessed.
-      cm[currentSensor] = 0;    
-      sonar[SONAR_NUM - 1].ping_timer_transmitter();
-      if (currentSensor != (SONAR_NUM - 1))                  // Make distance zero in case there's no ping echo for this sensor.
-        sonar[currentSensor].ping_timer(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+      cm[currentSensor] = 0; 
+      
+      if (currentSensor != (SONAR_NUM - 1))    
+        sonar[SONAR_NUM - 1].ping_timer_transmitter();
+      
+      // Make distance zero in case there's no ping echo for this sensor.
+      sonar[currentSensor].ping_timer(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
     }
   }
   // Other code that *DOESN'T* analyze ping results can go here.
