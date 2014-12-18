@@ -111,8 +111,9 @@ void NewPing::ping_timer_transmitter() {
 	if (!ping_trigger()) return;         // Trigger a ping, if it returns false, return without starting the echo timer.
 }
 
-void NewPing::ping_timer_reciever(void (*userFunc)(void)) {
-	timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
+void NewPing::ping_timer(void (*userFunc) (void)) {
+	if (!ping_trigger()) return;         // Trigger a ping, if it returns false, return without starting the echo timer.
+		timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
 }
  
 boolean NewPing::check_timer() {
