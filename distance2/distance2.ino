@@ -11,15 +11,16 @@
 // ---------------------------------------------------------------------------
 #include "NewPing.h"
 
-#define SONAR_NUM     4 // Number of sensors.
+#define SONAR_NUM     2 // Number of sensors.
 #define MAX_DISTANCE 200 // Maximum distance (in cm) to ping.
 #define PING_INTERVAL 33 // Milliseconds between sensor pings (29ms is about the min to avoid cross-sensor echo).
 
 unsigned long pingTimer; // Holds the times when the next ping should happen for each sensor.
+unsigned int cm[SONAR_NUM];
 
 NewPing sonar[SONAR_NUM] = {     // Sensor object array.
-  NewPing(12, MAX_DISTANCE), //0 // Each sensor's trigger pin, echo pin, and max distance to ping.
-  NewPing(10, MAX_DISTANCE), //1
+  //NewPing(12, MAX_DISTANCE), //0 // Each sensor's trigger pin, echo pin, and max distance to ping.
+  //NewPing(10, MAX_DISTANCE), //1
   NewPing(8, MAX_DISTANCE), //2 
   NewPing(7, 6, MAX_DISTANCE) //Transmitter
 };
@@ -32,42 +33,48 @@ void setup() {
 void loop() {
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
     pingTimer += PING_INTERVAL;
-    sonar[3].ping_timer(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
-    unsigned long maxTime = sonar[3].get_max_time();
-    sonar[2].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
-    sonar[1].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
-    sonar[0].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+    sonar[SONAR_NUM - 1].ping_timer(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+    unsigned long maxTime = sonar[SONAR_NUM - 1].get_max_time();
+    sonar[SONAR_NUM - 2].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+    //sonar[SONAR_NUM - 3].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+    //sonar[SONAR_NUM - 4].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+    print_all();
   }
 }
 
 void echoCheck() { // If ping received, set the sensor distance to array.
-  if (sonar[0].check_timer())
+ /* if (sonar[0].check_timer())
   {
-    unsigned int cm = sonar[0].ping_result / US_ROUNDTRIP_CM;
-    Serial.print(0);
-    Serial.print("=");
-    Serial.print("cm ");
+    cm[SONAR_NUM-4] = sonar[SONAR_NUM - 4].ping_result / US_ROUNDTRIP_CM;
+
+  }*/
+  //if (sonar[SONAR_NUM - 3].check_timer())
+  //{
+    // cm[SONAR_NUM-3] = sonar[SONAR_NUM - 3].ping_result / US_ROUNDTRIP_CM;
+
+  //}
+  if (sonar[SONAR_NUM - 2].check_timer())
+  {
+    cm[SONAR_NUM-2] = sonar[SONAR_NUM - 2].ping_result / US_ROUNDTRIP_CM;
+
   }
-  if (sonar[1].check_timer())
+ 
+  if (sonar[SONAR_NUM - 1].check_timer())
   {
-    unsigned int cm = sonar[1].ping_result / US_ROUNDTRIP_CM;
-    Serial.print(1);
-    Serial.print("=");
-    Serial.print("cm ");
-  }
-  if (sonar[2].check_timer())
-  {
-    unsigned int cm = sonar[2].ping_result / US_ROUNDTRIP_CM;
-    Serial.print(2);
-    Serial.print("=");
-    Serial.print("cm ");
-  }
-  if (sonar[3].check_timer())
-  {
-    unsigned int cm = sonar[3].ping_result / US_ROUNDTRIP_CM;
-    Serial.print(3);
-    Serial.print("=");
-    Serial.print("cm ");
+    cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
+
   }
   
+}
+void print_all()
+{
+  for (int i =0; i < SONAR_NUM; i++)
+  {
+    Serial.print(i);
+    Serial.print("=");
+    Serial.print(cm[i]);
+    Serial.print("    ");
+    
+  } 
+  Serial.println();
 }

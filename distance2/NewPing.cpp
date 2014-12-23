@@ -30,12 +30,11 @@ NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, int max_cm_distance) {
 }
 
 //Reciever Constructor
-NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, int max_cm_distance) {
+NewPing::NewPing(uint8_t echo_pin, int max_cm_distance) {
 	_echoBit = digitalPinToBitMask(echo_pin);       // Get the port register bitmask for the echo pin.
 
 	_echoInput = portInputRegister(digitalPinToPort(echo_pin));         // Get the input port register for the echo pin.
 
-	_triggerMode = (uint8_t *) portModeRegister(digitalPinToPort(trigger_pin)); // Get the port mode register for the trigger pin.
 	_is_transmitter = false;
 	_maxEchoTime = min(max_cm_distance, MAX_SENSOR_DISTANCE) * US_ROUNDTRIP_CM + (US_ROUNDTRIP_CM / 2); // Calculate the maximum distance in uS.
 }
@@ -126,13 +125,9 @@ void NewPing::ping_timer(void (*userFunc)(void)) {
 	timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
 }
 
-void NewPing::ping_timer(void (*userFunc)(void), unsigned long maxTime) {
-	if (_is_transmitter) {
-		if (!ping_trigger()) return;         // Trigger a ping, if it returns false, return without starting the echo timer.
-		timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.		
-	} else {
-		_max_time = maxTime;
-	}
+void NewPing::ping_timer(unsigned long maxTime) {
+	_max_time = maxTime;
+	
 }
  
 boolean NewPing::check_timer() {
