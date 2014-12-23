@@ -28,19 +28,15 @@ NewPing sonar[SONAR_NUM] = {     // Sensor object array.
 void setup() {
   Serial.begin(115200);
   pingTimer = millis() + 75;           // First ping starts at 75ms, gives time for the Arduino to chill before starting 
+  attachInterrupt(0, echoCheck2, FALLING);
+  attachInterrupt(1, echoCheck3, FALLING);
 }
 
 void loop() {
 
-  if (restartTimer)
-  {
-    timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
-    restartTimer = 0;
-  }x
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
     pingTimer += PING_INTERVAL;
-    NewPing::timer_stop();
-    sonar[SONAR_NUM - 1].ping_timer(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+    sonar[SONAR_NUM - 1].ping_interrupt(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
     unsigned long maxTime = sonar[SONAR_NUM - 1].get_max_time();
     sonar[SONAR_NUM - 2].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
     //sonar[SONAR_NUM - 3].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
@@ -72,6 +68,24 @@ void echoCheck() { // If ping received, set the sensor distance to array.
 
   }
   restartTimer = 1;  
+}
+
+void echoCheck2()
+{
+  if (sonar[SONAR_NUM - 2].check_timer())
+  {
+    cm[SONAR_NUM-2] = sonar[SONAR_NUM - 2].ping_result / US_ROUNDTRIP_CM;
+
+  }
+}
+
+void echoCheck3()
+{
+  if (sonar[SONAR_NUM - 1].check_timer())
+  {
+    cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
+
+  }  
 }
 
 void print_all()

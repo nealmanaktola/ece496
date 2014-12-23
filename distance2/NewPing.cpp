@@ -130,6 +130,9 @@ void NewPing::ping_timer(unsigned long maxTime) {
 	
 }
  
+void NewPing::ping_interrupt(void (*userFunc)(void)) {
+	if (!ping_trigger()) return;         // Trigger a ping, if it returns false, return without starting the echo timer.
+}
 boolean NewPing::check_timer() {
 	if (micros() > _max_time) { // Outside the timeout limit.
         // Disable timer interrupt
