@@ -18,7 +18,7 @@
 unsigned long pingTimer; // Holds the times when the next ping should happen for each sensor.
 unsigned int cm[SONAR_NUM];
 
-unsigned long startTime;
+volatile unsigned long startTime;
 
 NewPing sonar[SONAR_NUM] = {     // Sensor object array.
   //NewPing(12, MAX_DISTANCE), //0 // Each sensor's trigger pin, echo pin, and max distance to ping.
