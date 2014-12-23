@@ -31,6 +31,12 @@ void setup() {
 }
 
 void loop() {
+
+  if (restartTimer)
+  {
+    timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
+    restartTimer = 0;
+  }x
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
     pingTimer += PING_INTERVAL;
     NewPing::timer_stop();
@@ -65,9 +71,9 @@ void echoCheck() { // If ping received, set the sensor distance to array.
     cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
 
   }
-  timer_us(ECHO_TIMER_FREQ, echoCheck);
-  
+  restartTimer = 1;  
 }
+
 void print_all()
 {
   for (int i =0; i < SONAR_NUM; i++)
