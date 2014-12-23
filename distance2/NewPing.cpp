@@ -12,6 +12,7 @@
 // NewPing constructor
 // ---------------------------------------------------------------------------
 
+//Transmitter Constructor
 NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, int max_cm_distance) {
 	_triggerBit = digitalPinToBitMask(trigger_pin); // Get the port register bitmask for the trigger pin.
 	_echoBit = digitalPinToBitMask(echo_pin);       // Get the port register bitmask for the echo pin.
@@ -20,7 +21,7 @@ NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, int max_cm_distance) {
 	_echoInput = portInputRegister(digitalPinToPort(echo_pin));         // Get the input port register for the echo pin.
 
 	_triggerMode = (uint8_t *) portModeRegister(digitalPinToPort(trigger_pin)); // Get the port mode register for the trigger pin.
-
+	_is_transmitter = true;
 	_maxEchoTime = min(max_cm_distance, MAX_SENSOR_DISTANCE) * US_ROUNDTRIP_CM + (US_ROUNDTRIP_CM / 2); // Calculate the maximum distance in uS.
 
 #if DISABLE_ONE_PIN == true
@@ -28,6 +29,16 @@ NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, int max_cm_distance) {
 #endif
 }
 
+//Reciever Constructor
+NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, int max_cm_distance) {
+	_echoBit = digitalPinToBitMask(echo_pin);       // Get the port register bitmask for the echo pin.
+
+	_echoInput = portInputRegister(digitalPinToPort(echo_pin));         // Get the input port register for the echo pin.
+
+	_triggerMode = (uint8_t *) portModeRegister(digitalPinToPort(trigger_pin)); // Get the port mode register for the trigger pin.
+	_is_transmitter = false;
+	_maxEchoTime = min(max_cm_distance, MAX_SENSOR_DISTANCE) * US_ROUNDTRIP_CM + (US_ROUNDTRIP_CM / 2); // Calculate the maximum distance in uS.
+}
 
 // ---------------------------------------------------------------------------
 // Standard ping methods
@@ -52,6 +63,9 @@ unsigned int NewPing::ping_cm() {
 	return NewPingConvert(echoTime, US_ROUNDTRIP_CM); // Convert uS to centimeters.
 }
 
+unsigned long NewPing::get_max_time() {
+	return _max_time;
+}
 
 unsigned int NewPing::ping_median(uint8_t it) {
 	unsigned int uS[it], last;
@@ -107,29 +121,36 @@ boolean NewPing::ping_trigger() {
 // Timer interrupt ping methods (won't work with ATmega8 and ATmega128)
 // ---------------------------------------------------------------------------
 
-void NewPing::ping_timer_transmitter() {
+void NewPing::ping_timer(void (*userFunc)(void)) {
 	if (!ping_trigger()) return;         // Trigger a ping, if it returns false, return without starting the echo timer.
+	timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
 }
 
-void NewPing::ping_timer_receiver(void (*userFunc)(void)) {
-	timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.
+void NewPing::ping_timer(void (*userFunc)(void), unsigned long maxTime) {
+	if (_is_transmitter) {
+		if (!ping_trigger()) return;         // Trigger a ping, if it returns false, return without starting the echo timer.
+		timer_us(ECHO_TIMER_FREQ, userFunc); // Set ping echo timer check every ECHO_TIMER_FREQ uS.		
+	} else {
+		_max_time = maxTime;
+	}
 }
  
 boolean NewPing::check_timer() {
 	if (micros() > _max_time) { // Outside the timeout limit.
-		timer_stop();           // Disable timer interrupt
+		if (_is_transmitter)
+			timer_stop();        // Disable timer interrupt
 		return false;           // Cancel ping timer.
 	}
 
 	if (!(*_echoInput & _echoBit)) { // Ping echo received.
-		timer_stop();                // Disable timer interrupt
+		if (_is_transmitter)
+			timer_stop();            // Disable timer interrupt
 		ping_result = (micros() - (_max_time - _maxEchoTime) - 13); // Calculate ping time, 13uS of overhead.
 		return true;                 // Return ping echo true.
 	}
 
 	return false; // Return false because there's no ping echo yet.
 }
-
 
 // ---------------------------------------------------------------------------
 // Timer2/Timer4 interrupt methods (can be used for non-ultrasonic needs)
