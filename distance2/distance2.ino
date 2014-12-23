@@ -18,6 +18,8 @@
 unsigned long pingTimer; // Holds the times when the next ping should happen for each sensor.
 unsigned int cm[SONAR_NUM];
 
+unsigned long startTime;
+
 NewPing sonar[SONAR_NUM] = {     // Sensor object array.
   //NewPing(12, MAX_DISTANCE), //0 // Each sensor's trigger pin, echo pin, and max distance to ping.
   //NewPing(10, MAX_DISTANCE), //1
@@ -37,6 +39,7 @@ void loop() {
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
     pingTimer += PING_INTERVAL;
     sonar[SONAR_NUM - 1].ping_interrupt(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
+    startTime = micros();
     unsigned long maxTime = sonar[SONAR_NUM - 1].get_max_time();
     sonar[SONAR_NUM - 2].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
     //sonar[SONAR_NUM - 3].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
@@ -82,8 +85,9 @@ void echoCheck3()
 {
   if (sonar[SONAR_NUM - 1].check_timer())
   {
-    cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
+    //cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
 
+    cm[SONAR_NUM-1] = (micros() - startTime) / US_ROUNDTRIP_CM;
   }  
 }
 
