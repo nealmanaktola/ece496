@@ -132,14 +132,12 @@ void NewPing::ping_timer(unsigned long maxTime) {
  
 boolean NewPing::check_timer() {
 	if (micros() > _max_time) { // Outside the timeout limit.
-		if (_is_transmitter)
-			timer_stop();        // Disable timer interrupt
+        // Disable timer interrupt
 		return false;           // Cancel ping timer.
 	}
 
 	if (!(*_echoInput & _echoBit)) { // Ping echo received.
-		if (_is_transmitter)
-			timer_stop();            // Disable timer interrupt
+         // Disable timer interrupt
 		ping_result = (micros() - (_max_time - _maxEchoTime) - 13); // Calculate ping time, 13uS of overhead.
 		return true;                 // Return ping echo true.
 	}

@@ -33,6 +33,7 @@ void setup() {
 void loop() {
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
     pingTimer += PING_INTERVAL;
+    NewPing::timer_stop();
     sonar[SONAR_NUM - 1].ping_timer(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
     unsigned long maxTime = sonar[SONAR_NUM - 1].get_max_time();
     sonar[SONAR_NUM - 2].ping_timer(maxTime); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
