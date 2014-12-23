@@ -48,17 +48,7 @@ void loop() {
   }
 }
 
-void echoCheck() { // If ping received, set the sensor distance to array.
- /* if (sonar[0].check_timer())
-  {
-    cm[SONAR_NUM-4] = sonar[SONAR_NUM - 4].ping_result / US_ROUNDTRIP_CM;
-
-  }*/
-  //if (sonar[SONAR_NUM - 3].check_timer())
-  //{
-    // cm[SONAR_NUM-3] = sonar[SONAR_NUM - 3].ping_result / US_ROUNDTRIP_CM;
-
-  //}
+void echoCheck_timer() { // If ping received, set the sensor distance to array.
   if (sonar[SONAR_NUM - 2].check_timer())
   {
     cm[SONAR_NUM-2] = sonar[SONAR_NUM - 2].ping_result / US_ROUNDTRIP_CM;
@@ -76,8 +66,8 @@ void echoCheck2()
 {
   if (sonar[SONAR_NUM - 2].check_timer())
   {
-    cm[SONAR_NUM-2] = sonar[SONAR_NUM - 2].ping_result / US_ROUNDTRIP_CM;
-
+    //cm[SONAR_NUM-2] = sonar[SONAR_NUM - 2].ping_result / US_ROUNDTRIP_CM;
+    cm[SONAR_NUM-1] = (micros() - startTime) / US_ROUNDTRIP_CM;
   }
 }
 
@@ -85,9 +75,8 @@ void echoCheck3()
 {
   if (sonar[SONAR_NUM - 1].check_timer())
   {
-    cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
-
-    //cm[SONAR_NUM-1] = (micros() - startTime) / US_ROUNDTRIP_CM;
+    //cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
+    cm[SONAR_NUM-1] = (micros() - startTime) / US_ROUNDTRIP_CM;
   }  
 }
 
