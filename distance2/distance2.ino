@@ -65,6 +65,7 @@ void echoCheck() { // If ping received, set the sensor distance to array.
     cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
 
   }
+  timer_us(ECHO_TIMER_FREQ, echoCheck);
   
 }
 void print_all()
