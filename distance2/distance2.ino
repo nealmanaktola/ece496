@@ -30,7 +30,7 @@ NewPing sonar[SONAR_NUM] = {     // Sensor object array.
 void setup() {
   Serial.begin(115200);
   pingTimer = millis() + 75;           // First ping starts at 75ms, gives time for the Arduino to chill before starting 
-//  attachInterrupt(0, echoCheck2, FALLING);
+  attachInterrupt(0, echoCheck2, FALLING);
   attachInterrupt(1, echoCheck3, FALLING);
 }
 
@@ -85,9 +85,9 @@ void echoCheck3()
 {
   if (sonar[SONAR_NUM - 1].check_timer())
   {
-    //cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
+    cm[SONAR_NUM-1] = sonar[SONAR_NUM - 1].ping_result / US_ROUNDTRIP_CM;
 
-    cm[SONAR_NUM-1] = (micros() - startTime) / US_ROUNDTRIP_CM;
+    //cm[SONAR_NUM-1] = (micros() - startTime) / US_ROUNDTRIP_CM;
   }  
 }
 
