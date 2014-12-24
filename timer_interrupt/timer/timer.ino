@@ -30,8 +30,9 @@ void setup()
 
 void loop() {
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
-  	waiting_responses = SONAR_NUM;
-  	Timer1.restart();
+    
+    waiting_responses = SONAR_NUM;
+    Timer1.restart();
 
     pingTimer += PING_INTERVAL;
    	
@@ -43,9 +44,9 @@ void loop() {
 
     //Receiver Responses    
     for (i = 0; i < (SONAR_NUM -1); i++)
-	{
-		sonar[i].ping_timer(maxTime);
-	}    
+    {
+        sonar[i].ping_timer(maxTime);
+    }    
 
     print_all();
   }
@@ -58,14 +59,14 @@ void loop() {
 
 void echoCheck()
 {
-	for (i = 0; i < SONAR_NUM; i++)
-	{
-		if (sonar[i].check_timer())
-		{
-			response--;
-			cm[i] = sonar[i].ping_result / US_ROUNDTRIP_CM;
-		}
-	}
+  for (i = 0; i < SONAR_NUM; i++)
+  {
+    if (sonar[i].check_timer())
+    {
+        response--;
+	cm[i] = sonar[i].ping_result / US_ROUNDTRIP_CM;
+    }	
+  }
 }
 
 void print_all()
