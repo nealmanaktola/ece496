@@ -5,6 +5,7 @@
 #define SONAR_NUM 4
 #define TIMER_FREQ_US 24
 #define PING_INTERVAL 33 
+#define MAX_DISTANCE 200
 
 volatile int waiting_responses[SONAR_NUM];
 volatile int response_count = SONAR_NUM;
@@ -31,8 +32,9 @@ void setup()
 }
 
 void loop() {
+  int i;
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
-    
+  
     for (i = 0; i < SONAR_NUM; i++)
     {
       waiting_responses[i] = 1;
@@ -67,6 +69,7 @@ void loop() {
 
 void echoCheck()
 {
+  int i;
   for (i = 0; i < SONAR_NUM; i++)
   {
     if (waiting_responses[i] && sonar[i].check_timer())
