@@ -6,7 +6,9 @@
 #define TIMER_FREQ_US 24
 #define PING_INTERVAL 33 
 
-volatile int waiting_responses;
+volatile int waiting_responses[SONAR_NUM];
+volatile int response_count = SONAR_NUM;
+
 volatile int cm[SONAR_NUM];
 
 unsigned long pingTimer;
@@ -31,7 +33,13 @@ void setup()
 void loop() {
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
     
-    waiting_responses = SONAR_NUM;
+    for (i = 0; i < SONAR_NUM; i++)
+    {
+      waiting_responses[i] = 1;
+    }
+    
+    response_count = SONAR_NUM;
+
     Timer1.restart();
 
     pingTimer += PING_INTERVAL;
@@ -51,7 +59,7 @@ void loop() {
     print_all();
   }
   //All Sensors have received echo's or timed_out, stop timer interrupts
-  if (waiting_responses == 0)
+  if (response_count == 0)
   {
   	Timer1.stop();
   }
@@ -61,10 +69,11 @@ void echoCheck()
 {
   for (i = 0; i < SONAR_NUM; i++)
   {
-    if (sonar[i].check_timer())
+    if (waiting_responses[i] && sonar[i].check_timer())
     {
-        response--;
-	cm[i] = sonar[i].ping_result / US_ROUNDTRIP_CM;
+      waiting_responses[i] = 0;
+      response_count--;
+      cm[i] = sonar[i].ping_result / US_ROUNDTRIP_CM;
     }	
   }
 }
