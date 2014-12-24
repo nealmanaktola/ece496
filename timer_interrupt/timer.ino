@@ -1,36 +1,82 @@
-//Program should print consecutive numbers every second until it reaches 30.
+//Ultrasonic Sensor Test;
 #include "TimerOne.h"
+#include "NewPing.h"
 
+#define SONAR_NUM 4
+#define TIMER_FREQ_US 24
+#define PING_INTERVAL 33 
 
-#define TIMER_FREQ_US 1000000
+volatile int waiting_responses;
+volatile int cm[SONAR_NUM];
 
-volatile int x = 0;
-int y = 0;
+unsigned long pingTimer;
 
-
+NewPing sonar[SONAR_NUM] = {     // Sensor object array.
+  NewPing(12, MAX_DISTANCE), //0 // Each sensor's trigger pin, echo pin, and max distance to ping.
+  NewPing(10, MAX_DISTANCE), //1
+  NewPing(2, MAX_DISTANCE), //2 
+  NewPing(7, 3, MAX_DISTANCE) //Transmitter
+};
 
 void setup()
 {
 	Serial.begin(9600);
-	Timer1.initialize(TIMER_FREQ_US); //1 second interrupt
+
+	pingTimer = millis() + 75;           // First ping starts at 75ms, gives time for the Arduino to chill before starting 
+
+	Timer1.initialize(TIMER_FREQ_US); 
 	Timer1.attachInterrupt(echoCheck);
 }
 
-void loop()
-{
-	if (y != x)
+void loop() {
+  if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
+  	waiting_responses = SONAR_NUM;
+  	Timer1.restart();
+
+    pingTimer += PING_INTERVAL;
+   	
+    //Transmitter Ping
+    sonar[SONAR_NUM - 1].ping_interrupt(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).   
+    unsigned long maxTime = sonar[SONAR_NUM - 1].get_max_time();   
+
+    int i;
+
+    //Receiver Responses    
+    for (i = 0; i < (SONAR_NUM -1); i++)
 	{
-		Serial.print(x)
-		Serial.println();
-		y = x;
-	}
-	if (x == 30)
-	{
-		Timer1.stop();
-	}
+		sonar[i].ping_timer(maxTime);
+	}    
+
+    print_all();
+  }
+  //All Sensors have received echo's or timed_out, stop timer interrupts
+  if (waiting_responses == 0)
+  {
+  	Timer1.stop();
+  }
 }
 
 void echoCheck()
 {
-	x++;
+	for (i = 0; i < SONAR_NUM; i++)
+	{
+		if (sonar[i].check_timer())
+		{
+			response--;
+			cm[i] = sonar[i].ping_result / US_ROUNDTRIP_CM;
+		}
+	}
+}
+
+void print_all()
+{
+  for (int i =0; i < SONAR_NUM; i++)
+  {
+    Serial.print(i);
+    Serial.print("=");
+    Serial.print(cm[i]);
+    Serial.print("    ");
+    
+  } 
+  Serial.println();
 }
