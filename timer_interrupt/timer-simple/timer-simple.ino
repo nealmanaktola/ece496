@@ -3,7 +3,7 @@
 #include "NewPing.h"
 
 #define SONAR_NUM 4
-#define TIMER_FREQ_US 50
+#define TIMER_FREQ_US 37
 #define PING_INTERVAL 33 
 #define MAX_DISTANCE 200
 
@@ -82,25 +82,45 @@ void echoCheck()
 void print_all()
 {
 
-    Serial.print("1");
-    Serial.print("=");
-    Serial.print(cm1);
-    Serial.print("    "); 
- 
-    Serial.print("2");
-    Serial.print("=");
-    Serial.print(cm2);
-    Serial.print("    ");   
-  
-    Serial.print("3");
-    Serial.print("=");
-    Serial.print(cm3);
-    Serial.print("    ");   
+//    Serial.print("1");
+//    Serial.print("=");
+//    Serial.print(cm1);
+//    Serial.print("    "); 
+// 
+    if (cm2 < 70)
+    {
+      Serial.print("2");
+      Serial.print("=");
+      Serial.print(cm2);
+      Serial.print("    ");   
+    }
+    else
+    {
+      Serial.print("        ");
+    }
     
-    Serial.print("4");
-    Serial.print("=");
-    Serial.print(cm4);
-    Serial.print("    ");   
-
+    if (cm3 < 70)
+    {
+      Serial.print("3");
+      Serial.print("=");
+      Serial.print(cm3);
+      Serial.print("    ");   
+    }
+    else
+    {
+      Serial.print("        ");
+    }
+    
+    if (cm4 < 70)
+    {
+      Serial.print("4");
+      Serial.print("=");
+      Serial.print(cm4);
+      Serial.print("    ");   
+    }
+    else
+    {
+      Serial.print("        ");
+    }
   Serial.println();
 }
