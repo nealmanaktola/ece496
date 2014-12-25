@@ -72,11 +72,11 @@ void echoCheck()
     cm3 = sonar3.ping_result / US_ROUNDTRIP_CM;
     trigger3 = 0;
   }
-//  if (trigger4 && sonar4.check_timer())
-//  {
-//    cm4 = sonar4.ping_result / US_ROUNDTRIP_CM;
-//    trigger4 = 0;
-//  }	
+  if (trigger4 && sonar4.check_timer())
+  {
+    cm4 = sonar4.ping_result / US_ROUNDTRIP_CM;
+    trigger4 = 0;
+  }	
 }
 
 void print_all()
@@ -97,10 +97,10 @@ void print_all()
     Serial.print(cm3);
     Serial.print("    ");   
     
-//    Serial.print("4");
-//    Serial.print("=");
-//    Serial.print(cm4);
-//    Serial.print("    ");   
+    Serial.print("4");
+    Serial.print("=");
+    Serial.print(cm4);
+    Serial.print("    ");   
 
   Serial.println();
 }
