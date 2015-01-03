@@ -13,6 +13,9 @@ unsigned int cm2;
 unsigned int cm3;
 unsigned int cm4;
 
+unsigned int detect = 0;
+unsigned int runNum = 1;
+
 unsigned long pingTimer;
 
 volatile int trigger1 = 0;
@@ -51,10 +54,31 @@ void loop() {
     trigger3 = 1;
     trigger4 = 1;
     
+    checkDetect();
     print_all();
   }
 }
 
+void checkDetect()
+{
+  if (cm2 < 70 || cm3 < 70 || cm4 < 70)
+  {
+    Serial.print("Run: ");
+    Serial.print(runNum);
+    Serial.println();
+    detect = 1;
+  }
+  else if (cm2 >= 70 && cm3 >= 70 && cm4 >= 70)
+  {
+    if (detect == 1)
+    {
+      Serial.println();
+
+      runNum ++;
+    }
+    detect = 0; 
+  }
+}
 void echoCheck()
 {
   if (trigger1 && sonar1.check_timer())
@@ -87,6 +111,8 @@ void print_all()
 //    Serial.print(cm1);
 //    Serial.print("    "); 
 // 
+  if (detect == 1)
+  {
     if (cm2 < 70)
     {
       Serial.print("2");
@@ -122,5 +148,7 @@ void print_all()
     {
       Serial.print("        ");
     }
-  Serial.println();
+    Serial.println();
+  }
+  
 }
