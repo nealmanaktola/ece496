@@ -63,9 +63,6 @@ void checkDetect()
 {
   if (cm2 < 70 || cm3 < 70 || cm4 < 70)
   {
-    Serial.print("Run: ");
-    Serial.print(runNum);
-    Serial.println();
     detect = 1;
   }
   else if (cm2 >= 70 && cm3 >= 70 && cm4 >= 70)
@@ -73,7 +70,9 @@ void checkDetect()
     if (detect == 1)
     {
       Serial.println();
-
+      Serial.print("Run: ");
+      Serial.print(runNum);
+      Serial.println();
       runNum ++;
     }
     detect = 0; 
