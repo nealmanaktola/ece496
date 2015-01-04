@@ -7,19 +7,14 @@
 #define PING_INTERVAL 33 
 #define MAX_DISTANCE 200
 
-#define ELEMENTS 10
-unsigned int cm1[ELEMENTS];
-unsigned int cm2[ELEMENTS];
-unsigned int cm3[ELEMENTS];
-unsigned int cm4[ELEMENTS];
 
-//element counter
-unsigned int element = 0;
+unsigned int cm1;
+unsigned int cm2;
+unsigned int cm3;
+unsigned int cm4;
 
 unsigned int detect = 0;
 unsigned int runNum = 1;
-
-
 
 unsigned long pingTimer;
 
@@ -66,11 +61,11 @@ void loop() {
 
 void checkDetect()
 {
-  if (cm2[element] < 70 || cm3[element] < 70 || cm4[element] < 70)
+  if (cm2 < 70 || cm3 < 70 || cm4 < 70)
   {
     detect = 1;
   }
-  else if (cm2[element] >= 70 && cm3[element] >= 70 && cm4[element] >= 70)
+  else if (cm2 >= 70 && cm3 >= 70 && cm4 >= 70)
   {
     if (detect == 1)
     {
@@ -87,22 +82,22 @@ void echoCheck()
 {
   if (trigger1 && sonar1.check_timer())
   {
-    cm1[element] = sonar1.ping_result / US_ROUNDTRIP_CM;
+    cm1 = sonar1.ping_result / US_ROUNDTRIP_CM;
     trigger1 = 0;
   }
   if (trigger2 && sonar2.check_timer())
   {
-    cm2[element] = sonar2.ping_result / US_ROUNDTRIP_CM;
+    cm2 = sonar2.ping_result / US_ROUNDTRIP_CM;
     trigger2 = 0;
   }	
   if (trigger3 && sonar3.check_timer())
   {
-    cm3[element] = sonar3.ping_result / US_ROUNDTRIP_CM;
+    cm3 = sonar3.ping_result / US_ROUNDTRIP_CM;
     trigger3 = 0;
   }
   if (trigger4 && sonar4.check_timer())
   {
-    cm4[element] = sonar4.ping_result / US_ROUNDTRIP_CM;
+    cm4 = sonar4.ping_result / US_ROUNDTRIP_CM;
     trigger4 = 0;
   }	
 }
@@ -112,16 +107,16 @@ void print_all()
 
 //    Serial.print("1");
 //    Serial.print("=");
-//    Serial.print(cm1[element]);
+//    Serial.print(cm1);
 //    Serial.print("    "); 
 // 
   if (detect == 1)
   {
-    if (cm2[element] < 70)
+    if (cm2 < 70)
     {
       Serial.print("2");
       Serial.print("=");
-      Serial.print(cm2[element]);
+      Serial.print(cm2);
       Serial.print("    ");   
     }
     else
@@ -129,11 +124,11 @@ void print_all()
       Serial.print("        ");
     }
     
-    if (cm3[element] < 70)
+    if (cm3 < 70)
     {
       Serial.print("3");
       Serial.print("=");
-      Serial.print(cm3[element]);
+      Serial.print(cm3);
       Serial.print("    ");   
     }
     else
@@ -141,11 +136,11 @@ void print_all()
       Serial.print("        ");
     }
     
-    if (cm4[element] < 70)
+    if (cm4 < 70)
     {
       Serial.print("4");
       Serial.print("=");
-      Serial.print(cm4[element]);
+      Serial.print(cm4);
       Serial.print("    ");   
     }
     else
