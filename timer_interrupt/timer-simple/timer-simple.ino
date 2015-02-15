@@ -63,7 +63,7 @@ void checkDetect()
 {
   if (cm2 < 70 || cm3 < 70 || cm4 < 70)
   {
-    detect = 1;
+    detect=3; // setting how many times nothing is accepted
   }
   else if (cm2 >= 70 && cm3 >= 70 && cm4 >= 70)
   {
@@ -74,8 +74,14 @@ void checkDetect()
       Serial.print(runNum);
       Serial.println();
       runNum ++;
+      detect = 0;
+      
     }
-    detect = 0; 
+    else if (detect <= 3)
+    {
+       detect--; 
+    }
+
   }
 }
 void echoCheck()
@@ -110,7 +116,7 @@ void print_all()
 //    Serial.print(cm1);
 //    Serial.print("    "); 
 // 
-  if (detect == 1)
+  if (detect > 0)
   {
     if (cm2 < 70)
     {
