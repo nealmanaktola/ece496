@@ -83,28 +83,42 @@ void print_array(char* name, int* x, int n)
 int main(int argc, char **argv)
 {
 	//int x[] = {48,47,46,45,45,45,45,44,45,43,44,44,44,41,41,43,42,41,41,41,45,45,43}; //array x
-	int x[] = {50,48,50,50,48,52,48,48,49,50,50,59}; //array x //FAST GESTURE
-	int n = 12; //size of x
+	// int x[] = {50,48,50,50,48,52,48,48,49,50,50,59}; //array x //FAST GESTURE
+	// int n = 12; //size of x
 	
 	//int y[] = {50,51,47,48,47,49,46,50,51,47,46,47,47,47,53,48,49}; //array y
-	int y[] = {46,46,46,45,45,45,46,45,46,45,46,45,46,45,45,45,46,45,45,46}; //array y // SLOW LEFT-RIGHT GESTURE
-	int m = 20;// size of y
+	// int y[] = {46,46,46,45,45,45,46,45,46,45,46,45,46,45,45,45,46,45,45,46}; //array y // SLOW LEFT-RIGHT GESTURE
+	// int m = 20;// size of y
+  
+  // normalize(x,n);
+	// normalize(y,m);
 	
-	normalize(x,n);
+  // print_array("array x",x,n);
+	// print_array("array y",y,m);
 	
-
+	// bool isSimilar = dtw(x,y,n,m);
 	
-	normalize(y,m);
+	// if (isSimilar)
+		// printf("Similar!");
+	// else
+		// printf("Not Similar!");
+    
+  int left_sensor_normal[10][10];
+  int right_sensor_normal[10][10];
+  int up_sensor_normal[10][10];
+  int down_sensor_normal[10][10];
 	
-	print_array("array x",x,n);
-	print_array("array y",y,m);
+  int left_sensor_actual[10];
+  int right_sensor_actual[10];
+  int up_sensor_actual[10];
+  int down_sensor_actual[10];
+  
+  bool isSimilar = dtw(left_sensor_normal,left_sensor_actual,10, 10);
+  bool isSimilar = dtw(right_sensor_normal,right_sensor_actual,10, 10);
+  bool isSimilar = dtw(up_sensor_normal,up_sensor_actual,10, 10); 
+  //bool isSimilar = dtw(down_sensor_normal,down_sensor_actual,10, 10);
 	
-	bool isSimilar = dtw(x,y,n,m);
 	
-	if (isSimilar)
-		printf("Similar!");
-	else
-		printf("Not Similar!");
 		
 	return 0;
 }

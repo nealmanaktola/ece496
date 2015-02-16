@@ -77,7 +77,11 @@ void checkDetect()
       detect = 0;
       
     }
-    else if (detect <= 3)
+    else if (detect==2)
+    {
+       detect--; 
+    }
+    else if (detect==3)
     {
        detect--; 
     }
