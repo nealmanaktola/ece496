@@ -5,18 +5,18 @@
 ## Debug
 ProjectName            :=test
 ConfigurationName      :=Debug
-WorkspacePath          := "C:\ece496\dtw\dtw"
-ProjectPath            := "C:\ece496\dtw\dtw\test"
+WorkspacePath          := "C:\Users\Muntaqim\Documents\GitHub\ece496\dtw\dtw"
+ProjectPath            := "C:\Users\Muntaqim\Documents\GitHub\ece496\dtw\dtw\test"
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
-User                   :=Neal
-Date                   :=02/15/15
-CodeLitePath           :="C:\Program Files (x86)\CodeLite"
-LinkerName             :=C:/MinGW-4.8.1/bin/g++.exe 
-SharedObjectLinkerName :=C:/MinGW-4.8.1/bin/g++.exe -shared -fPIC
+User                   :=Muntaqim
+Date                   :=02/16/15
+CodeLitePath           :="C:\Program Files\CodeLite"
+LinkerName             :=C:/strawberry/c/bin/g++.exe 
+SharedObjectLinkerName :=C:/strawberry/c/bin/g++.exe -shared -fPIC
 ObjectSuffix           :=.o
 DependSuffix           :=.o.d
 PreprocessSuffix       :=.i
@@ -36,7 +36,7 @@ ObjectsFileList        :="test.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=makedir
 RcCmpOptions           := 
-RcCompilerName         :=C:/MinGW-4.8.1/bin/windres.exe 
+RcCompilerName         :=C:/strawberry/c/bin/windres.exe 
 LinkOptions            :=  
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch). 
 IncludePCH             := 
@@ -49,20 +49,19 @@ LibPath                := $(LibraryPathSwitch).
 ## Common variables
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
-AR       := C:/MinGW-4.8.1/bin/ar.exe rcu
-CXX      := C:/MinGW-4.8.1/bin/g++.exe 
-CC       := C:/MinGW-4.8.1/bin/gcc.exe 
+AR       := C:/strawberry/c/bin/ar.exe rcu
+CXX      := C:/strawberry/c/bin/g++.exe 
+CC       := C:/strawberry/c/bin/gcc.exe 
 CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
 CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
-AS       := C:/MinGW-4.8.1/bin/as.exe 
+AS       := C:/strawberry/c/bin/as.exe 
 
 
 ##
 ## User defined environment variables
 ##
-CodeLiteDir:=C:\Program Files (x86)\CodeLite
-UNIT_TEST_PP_SRC_DIR:=C:\UnitTest++-1.3
+CodeLiteDir:=C:\Program Files\CodeLite
 Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) 
 
 
@@ -91,7 +90,7 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/main.c$(ObjectSuffix): main.c $(IntermediateDirectory)/main.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "C:/ece496/dtw/dtw/test/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
+	$(CC) $(SourceSwitch) "C:/Users/Muntaqim/Documents/GitHub/ece496/dtw/dtw/test/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/main.c$(DependSuffix): main.c
 	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.c$(ObjectSuffix) -MF$(IntermediateDirectory)/main.c$(DependSuffix) -MM "main.c"
 
@@ -104,10 +103,6 @@ $(IntermediateDirectory)/main.c$(PreprocessSuffix): main.c
 ## Clean
 ##
 clean:
-	$(RM) ./Debug/*$(ObjectSuffix)
-	$(RM) ./Debug/*$(DependSuffix)
-	$(RM) $(OutputFile)
-	$(RM) $(OutputFile).exe
-	$(RM) "../.build-debug/test"
+	$(RM) -r ./Debug/
 
 

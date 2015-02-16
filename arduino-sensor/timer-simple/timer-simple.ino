@@ -1,7 +1,8 @@
 //Ultrasonic Sensor Test;
 #include "TimerOne.h"
 #include "NewPing.h"
-
+#include <string>
+#include <sstream.h>
 #define SONAR_NUM 4
 #define TIMER_FREQ_US 37
 #define PING_INTERVAL  26
@@ -163,29 +164,26 @@ void echoCheck()
 void print_all()
 {
   int number_values = 0;
-      
+  String ss;
   //second sensor
   for(number_values = 0; number_values < 20; number_values++)
   {
-    Serial.print(cm2_array[number_values]);
-    Serial.print(",");
+    ss = ss + String(cm2_array[number_values]) + ",";
   }
-  Serial.print(";");
+  ss = ss + ";";
   //third sensor
   for(number_values = 0; number_values < 20; number_values++)
   {
-    Serial.print(cm3_array[number_values]);
-    Serial.print(",");
+    ss = ss + String(cm3_array[number_values]) + ",";
+
   }
-  Serial.print(";");
-  //fourth sensor
+  ss = ss + ";";
   for(number_values = 0; number_values < 20; number_values++)
   {
-    Serial.print(cm4_array[number_values]);
-    Serial.print(",");
+    ss = ss +  String(cm4_array[number_values]) + ",";
   }
-  Serial.print(";");
-  Serial.println();
+  ss = ss + ";" + "\n";
+  Serial.print(ss);
    
 }
 //void print_all()
