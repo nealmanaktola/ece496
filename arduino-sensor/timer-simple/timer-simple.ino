@@ -4,24 +4,29 @@
 
 #define SONAR_NUM 4
 #define TIMER_FREQ_US 37
-#define PING_INTERVAL 26 
+#define PING_INTERVAL  26
 #define MAX_DISTANCE 200
 
 
-unsigned int cm1;
-unsigned int cm2;
-unsigned int cm3;
-unsigned int cm4;
+short cm1;
+short cm2;
+short cm3;
+short cm4;
+short cm2_array[20];
+short cm3_array[20];
+short cm4_array[20];
 
-unsigned int detect = 0;
-unsigned int runNum = 1;
+short counter = 0;
+
+short detect = 0;
+short runNum = 1;
 
 unsigned long pingTimer;
 
-volatile int trigger1 = 0;
-volatile int trigger2 = 0;
-volatile int trigger3 = 0;
-volatile int trigger4 = 0;
+short trigger1 = 0;
+short trigger2 = 0;
+short trigger3 = 0;
+short trigger4 = 0;
 
 NewPing sonar1 = NewPing(7,6,MAX_DISTANCE);
 NewPing sonar2 = NewPing(8,MAX_DISTANCE);
@@ -36,29 +41,58 @@ void setup()
 
 	Timer1.initialize(TIMER_FREQ_US); 
 	Timer1.attachInterrupt(echoCheck);
+        
+        int x = 0;
+        
+        for (x = 0; x < 20; x++)
+        {
+          cm2_array[x] = 0;
+          cm3_array[x] = 0;
+          cm4_array[x] = 0;
+        }
 }
 
 void loop() {
   int i;
   if (millis() >= pingTimer) {         // Is it this sensor's time to ping?
 
+    trigger1 = 1;
+    trigger2 = 1;
+    trigger3 = 1;
+    trigger4 = 1;
+
     pingTimer += PING_INTERVAL;
+    //fill_arrays();
+    cm2_array[counter] = counter;
+    cm3_array[counter] = counter;
+    cm4_array[counter] = counter;
+    //counter = counter + 1;   
+   
+    checkDetect();
+    print_all();
+   
    
     sonar1.ping_interrupt(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).   
     sonar2.ping_timer(sonar1.get_max_time());
     sonar3.ping_timer(sonar1.get_max_time());
     sonar4.ping_timer(sonar1.get_max_time());
     
-    trigger1 = 1;
-    trigger2 = 1;
-    trigger3 = 1;
-    trigger4 = 1;
+
     
-    checkDetect();
-    print_all();
+
   }
 }
 
+void fill_arrays()
+{
+//   //cm1_array[counter] = cm1
+   cm2_array[counter] = cm2;
+   cm3_array[counter] = cm3;
+   cm4_array[counter] = cm4;
+   counter = counter + 1;
+
+    
+}
 void checkDetect()
 {
   if (cm2 < 70 || cm3 < 70 || cm4 < 70)
@@ -75,7 +109,7 @@ void checkDetect()
       Serial.println();
       runNum ++;
       detect = 0;
-      
+      counter = 0;   
     }
     else if (detect==2)
     {
@@ -161,3 +195,5 @@ void print_all()
   }
   
 }
+
+
