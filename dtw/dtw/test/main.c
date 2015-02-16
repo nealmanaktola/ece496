@@ -24,7 +24,7 @@ int normalize(int* arr, int n)
 	//Find nonzero min
 	for (i = 1; i < n; i++)
 	{
-		if (arr[i] && arr[i] < min)
+		if (arr[i] && (arr[i] < min))
 		{
 			min = arr[i];
 		}
@@ -103,22 +103,27 @@ int main(int argc, char **argv)
 	// else
 		// printf("Not Similar!");
     
-  int left_sensor_normal[10][10];
-  int right_sensor_normal[10][10];
-  int up_sensor_normal[10][10];
-  int down_sensor_normal[10][10];
+
+  //int down_sensor_normal[10][10];
 	
-  int left_sensor_actual[10];
-  int right_sensor_actual[10];
-  int up_sensor_actual[10];
-  int down_sensor_actual[10];
+  int left_sensor_normal[10] = {19,17,16,17,19,0,0,0,0,0};
+  int right_sensor_normal[10] = {0,0,0,0,0,19,17,16,17,19};
+  int up_sensor_normal[10] = {0,0,19,19,19,19,19,19,0,0};
+
   
-  bool isSimilar = dtw(left_sensor_normal,left_sensor_actual,10, 10);
-  bool isSimilar = dtw(right_sensor_normal,right_sensor_actual,10, 10);
-  bool isSimilar = dtw(up_sensor_normal,up_sensor_actual,10, 10); 
-  //bool isSimilar = dtw(down_sensor_normal,down_sensor_actual,10, 10);
+  int left_sensor_actual[11] = {0,0,0,0,22,24,20,24,23,26,26};
+  int right_sensor_actual[11] = {21,21,20,20,21,21,24,0,0,0};
+  int up_sensor_actual[11] = {0,20,18,21,20,22,22,0,0,0,0};
+
+  
+  bool isSimilar = dtw(left_sensor_normal,left_sensor_actual,10, 11) 
+  & dtw(right_sensor_normal,right_sensor_actual,10, 11)
+  & dtw(up_sensor_normal,up_sensor_actual,10, 11);
 	
-	
+	if (isSimilar)
+		printf("Similar!");
+	else
+		printf("Not Similar!");
 		
 	return 0;
 }
