@@ -38,8 +38,8 @@ void loop()
   
   if (cm < 60)
   {
-    Serial.print(cm);
-    Serial.print(",");
+    //Serial.print(cm);
+    //Serial.print(",");
     num++;
     if (start  == 0)
       start = 1;    
@@ -48,13 +48,14 @@ void loop()
   {
     if (start >= 1)
       start++;
-    if (start == 20)
+    if (start == 3)
     {
-      Serial.print(num);
-      Serial.println();
-      Serial.print("Run ");
-      Serial.print(counter);
-      Serial.print(":");
+//      Serial.print(num);
+//      Serial.println();
+//      Serial.print("Run ");
+//      Serial.print(counter);
+//      Serial.print(":");
+      Serial.print("Swipe");
       start = 0;
       num = 0;
       counter++;
