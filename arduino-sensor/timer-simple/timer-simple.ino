@@ -227,7 +227,7 @@ void print_all()
     }
     
   }
-  
+  Serial.print("END");
   //third sensor
   Serial.print("S02");
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
@@ -246,7 +246,7 @@ void print_all()
     }
     
   }
-  
+  Serial.print("END");
   //fourth sensor
   Serial.print("S03");
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
@@ -265,6 +265,7 @@ void print_all()
     }
     
   }
+  Serial.print("END");
   //fifth sensor
   Serial.print("S04");
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
@@ -283,6 +284,7 @@ void print_all()
     }
     
   }
+  Serial.print("END");
   Serial.print("ENG");
    
 }
