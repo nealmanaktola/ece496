@@ -26,7 +26,7 @@ volatile int trigger4 = 0;
 NewPing sonar1 = NewPing(7,6,MAX_DISTANCE);
 NewPing sonar2 = NewPing(8,MAX_DISTANCE);
 NewPing sonar3 = NewPing(9,MAX_DISTANCE);
-NewPing sonar4 = NewPing(10,MAX_DISTANCE);
+NewPing sonar4 = NewPing(11,MAX_DISTANCE);
 
 void setup()
 {
