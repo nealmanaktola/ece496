@@ -18,42 +18,58 @@ public:
 			std::cout << "Not connected" << std::endl;
 	};
 
+	int * readSensorValues()
+	{
+		char in[MAX_LEN];
+		int numBytes;
+		int* valueList = new int[30];
+		int i = 0;
+		while (true)
+		{
+			if ((numBytes = m_sp->ReadData(in, MAX_LEN)) != -1)
+			{
+				if (!strcmp("END", in))
+				{
+					break;
+				}
+				else
+				{
+					valueList[i] = atoi(in);
+					i++;
+				}
+			}
 
+		}
+		return valueList;
+	}
 	bool readData(std::vector<int *>& sensorValues)
 	{
 		char in[MAX_LEN];
-		int numBytes = m_sp->ReadData(in, MAX_LEN);
+		int numBytes;
 
-		if (numBytes != -1)
+		//New Gesture if STG;
+		if ((numBytes = m_sp->ReadData(in, MAX_LEN) != -1) && !(strncmp(in, "STG", MAX_LEN)))
 		{
-			//Assume Correct syntax;
-			std::string allSensorStr = in;
-
-			size_t pos = 0;
-			int i = 0;
-
-			while ((pos = allSensorStr.find(";")) != std::string::npos) {
-				std::string sensorStream = allSensorStr.substr(0, pos);
-				std::vector<int> values;
-
-				size_t i_pos = 0;
-				sensorValues.push_back(new int[20]);	
-				int j = 0;
-				while ((i_pos = sensorStream.find(",")) != std::string::npos)
+			while (true)
+			{
+				if ((numBytes = m_sp->ReadData(in, MAX_LEN)) != -1)
 				{
-					int num = atoi((sensorStream.substr(0, pos)).c_str());
-					sensorValues[i][j] = num;
-					sensorStream.erase(0, i_pos + 1);
-					j++;
+					if (!strncmp("S0", in,2))
+					{
+						int * sensorValueList = readSensorValues();
+						sensorValues.push_back(sensorValueList);
+
+					}
+					else if (!strcmp("ENG", in))
+					{
+						break;
+					}
+
 				}
 
-				i++;
-				
-				allSensorStr.erase(0, pos + 1);
 			}
 			return true;
 		}
-		
 		return false;
 	}
 
