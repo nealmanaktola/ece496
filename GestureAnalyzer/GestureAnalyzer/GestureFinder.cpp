@@ -7,12 +7,18 @@
 #define INFINITY 1 << 25;
 #define SCORE_THRESHOLD 500
 
-
+/*
 Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 	{ { 19, 17, 16, 17, 19, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 19, 17, 16, 17, 19 }, { 0, 0, 19, 19, 19, 19, 19, 19, 0, 0 } }, // LEFT TO RIGHT SWIPE
 	{ { 0, 0, 0, 0, 0, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 0, 0, 0, 0, 0 }, { 0, 0, 19, 19, 19, 19, 19, 19, 0, 0 } } // RIGHT TO LEFT SWIPE
-
 };
+*/
+
+Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
+	{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 } }, // LEFT TO RIGHT SWIPE
+	{ { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 } } // RIGHT TO LEFT SWIPE
+};
+
 
 //Dynamic Time Warping test with Random Vectors
 int FindGesture(int left_sensor[20], int right_sensor[20], int down_sensor[20])
@@ -42,9 +48,9 @@ int FindGesture(int left_sensor[20], int right_sensor[20], int down_sensor[20])
 	{
 		print_array("left_sensor", left_sensor, length);
 		print_array("left_sensor_actual", Stored_Gestures[x].LeftSensor, 10);
-		dtw_score[0] = dtw(left_sensor, Stored_Gestures[x].LeftSensor, 10, length);
-		dtw_score[1] = dtw(right_sensor, Stored_Gestures[x].RightSensor, 10, length);
-	    dtw_score[2] = dtw(down_sensor, Stored_Gestures[x].DownSensor, 10, length);
+		dtw_score[0] = dtw(left_sensor, Stored_Gestures[x].LeftSensor, length, 10);
+		dtw_score[1] = dtw(right_sensor, Stored_Gestures[x].RightSensor, length, 10);
+		dtw_score[2] = dtw(down_sensor, Stored_Gestures[x].DownSensor, length, 10);
 
 		isSimilar = (dtw_score[0] < SCORE_THRESHOLD) && (dtw_score[1] < SCORE_THRESHOLD) && (dtw_score[2] < SCORE_THRESHOLD);
 		
@@ -85,7 +91,7 @@ int* normalize(int* arr, int n)
 		
 		}
 	}
-	min = min - 1;
+
 	std::cout << min << std::endl;
 
 	for (i = 0; i < n; i++)
@@ -97,7 +103,7 @@ int* normalize(int* arr, int n)
 	}
 	return arr;
 }
-bool dtw(int *x, int *y, int n, int m)
+int dtw(int *x, int *y, int n, int m)
 {
 	int** distance = new int *[n];
 	int i, j;
@@ -126,8 +132,15 @@ bool dtw(int *x, int *y, int n, int m)
 	}
 
 	printf("minimum distance %d\n", distance[n - 1][m - 1]);
+	int min = distance[n - 1][m - 1];
+	
+	for (i = 0; i < n; i++)
+	{
+		delete [] distance[i];
+	}
+	delete [] distance;
 
-	return distance[n - 1][m - 1];
+	return min;
 
 }
 void print_array(char* name, int* x, int n)
@@ -157,9 +170,9 @@ int FindLength(int left_sensor[20], int right_sensor[20], int down_sensor[20])
 	for (int x = 0; x < 18; x++)
 	{
 		//if three 0s in a row, return index where zero starts
-		first = (left_sensor[x] == 0) && (right_sensor[x] == 0) && (down_sensor[x] == 0);
-		second = (left_sensor[x + 1] == 0) && (right_sensor[x + 1] == 0) && (down_sensor[x + 1] == 0);
-		third = (left_sensor[x + 2] == 0) && (right_sensor[x + 2] == 0) && (down_sensor[x + 2] == 0);
+		first = (left_sensor[x] == 200) && (right_sensor[x] == 200) && (down_sensor[x] == 200);
+		second = (left_sensor[x + 1] == 200) && (right_sensor[x + 1] == 200) && (down_sensor[x + 1] == 200);
+		third = (left_sensor[x + 2] == 200) && (right_sensor[x + 2] == 200) && (down_sensor[x + 2] == 200);
 		if (first && second && third)
 		{
 			std::cout << "length is" << x << std::endl;

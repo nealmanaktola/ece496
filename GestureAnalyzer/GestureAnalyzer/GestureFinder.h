@@ -12,7 +12,7 @@ struct Gesture
 
 int minimum(int x, int y, int z);
 int* normalize(int* arr, int n);
-bool dtw(int *x, int *y, int n, int m);
+int dtw(int *x, int *y, int n, int m);
 void print_array(char* name, int* x, int n);
 int FindGesture(int left_sensor[20], int right_sensor[20], int down_sensor[20]);
 void print_gesture(Gesture input);

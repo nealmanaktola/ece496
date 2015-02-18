@@ -20,9 +20,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		if (isValid)
 		{
-			for (int i = 0; i < sensorValues.size(); i++)
+			for (int i = 200; i < sensorValues.size(); i++)
 			{
-				for (int j = 0; j < 20; j++)
+				for (int j = 200; j < 20; j++)
 				{
 					std::cout << sensorValues[i][j] << ",";
 				}
@@ -31,9 +31,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		}
 	}*/
-	int left_sensor_actual[20] = { 0, 0, 0, 0, 22, 24, 20, 24, 23, 26, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	int right_sensor_actual[20] = { 21, 21, 20, 20, 21, 21, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	int up_sensor_actual[20] = { 0, 20, 18, 21, 20, 22, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	int left_sensor_actual[20] = { 200, 200, 200, 200, 22, 24, 20, 24, 23, 26, 26, 200, 200, 200, 200, 200, 200, 200, 200, 200};
+	int right_sensor_actual[20] = { 21, 21, 20, 20, 21, 21, 24, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200 };
+	int up_sensor_actual[20] = { 200, 20, 18, 21, 20, 22, 22, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200 };
 	int gesture = FindGesture(left_sensor_actual, right_sensor_actual, up_sensor_actual);
 	return 0;
 }
