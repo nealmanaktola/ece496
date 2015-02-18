@@ -71,7 +71,7 @@ void loop() {
     pingTimer += PING_INTERVAL;
     checkDetect();
     fill_arrays();
-    //print_all2();
+    print_all2();
  
    
     
@@ -213,7 +213,13 @@ void print_all()
   Serial.print("S01");
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
   {
-    if (cm2_array[number_values] < 100)
+    if (cm2_array[number_values] < 10)
+    {
+      ss = "00" + String(cm2_array[number_values]);
+      Serial.print(ss);
+      cm2_array[number_values] = 0;
+    }
+    else if (cm2_array[number_values] < 100)
     {
       ss = "0" + String(cm2_array[number_values]);
       Serial.print(ss);
@@ -232,7 +238,13 @@ void print_all()
   Serial.print("S02");
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
   {
-    if (cm3_array[number_values] < 100)
+    if (cm3_array[number_values] < 10)
+    {
+      ss = "00" + String(cm3_array[number_values]);
+      Serial.print(ss);
+      cm3_array[number_values] = 0;
+    }
+    else if (cm3_array[number_values] < 100)
     {
       ss = "0" + String(cm3_array[number_values]);
       Serial.print(ss);
@@ -251,7 +263,13 @@ void print_all()
   Serial.print("S03");
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
   {
-    if (cm4_array[number_values] < 100)
+    if (cm4_array[number_values] < 10)
+    {
+      ss = "00" + String(cm4_array[number_values]);
+      Serial.print(ss);
+      cm4_array[number_values] = 0;
+    }
+    else if (cm4_array[number_values] < 100)
     {
       ss = "0" + String(cm4_array[number_values]);
       Serial.print(ss);
@@ -270,7 +288,13 @@ void print_all()
   Serial.print("S04");
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
   {
-    if (cm5_array[number_values] < 100)
+    if (cm5_array[number_values] < 10)
+    {
+      ss = "00" + String(cm5_array[number_values]);
+      Serial.print(ss);
+      cm5_array[number_values] = 0;
+    }
+    else if (cm5_array[number_values] < 100)
     {
       ss = "0" + String(cm5_array[number_values]);
       Serial.print(ss);
