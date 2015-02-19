@@ -9,7 +9,7 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 	
-	SensorParser parser("\\\\.\\COM4");
+	SensorParser parser("\\\\.\\COM3");
 	std::vector<int *> sensorValues;
 
 	
