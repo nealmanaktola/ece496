@@ -15,7 +15,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	while (true)
 	{
-		int isValid = parser.readData(sensorValues);
+		bool isValid = parser.readData(sensorValues);
 
 		if (isValid)
 		{

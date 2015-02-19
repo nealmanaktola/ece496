@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#define MAX_LEN 1024
+#define MAX_LEN 3
 
 class SensorParser {
 private:
@@ -28,13 +28,14 @@ public:
 		{
 			if ((numBytes = m_sp->ReadData(in, MAX_LEN)) != -1)
 			{
-				if (!strcmp("END", in))
+				if (!strncmp("END", in,3))
 				{
 					break;
 				}
 				else
 				{
-					valueList[i] = atoi(in);
+					int val = atoi(in);
+					valueList[i] = val;
 					i++;
 				}
 			}
@@ -60,7 +61,7 @@ public:
 						sensorValues.push_back(sensorValueList);
 
 					}
-					else if (!strcmp("ENG", in))
+					else if (!strncmp("ENG", in,3))
 					{
 						break;
 					}
