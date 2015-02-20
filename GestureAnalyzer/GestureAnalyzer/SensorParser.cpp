@@ -5,7 +5,9 @@
 #include <vector>
 #include <string>
 
-#define MAX_LEN 80 * 4
+
+#define MAX_LEN 120 * 4
+
 
 class SensorParser {
 private:

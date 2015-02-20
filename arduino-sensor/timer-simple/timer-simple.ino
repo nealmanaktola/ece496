@@ -41,7 +41,7 @@ NewPing sonar5 = NewPing(11,MAX_DISTANCE);
 
 void setup()
 {
-	Serial.begin(9600);
+	Serial.begin(115200);
 
 	pingTimer = millis() + 75;           // First ping starts at 75ms, gives time for the Arduino to chill before starting 
 
@@ -71,7 +71,7 @@ void loop() {
     pingTimer += PING_INTERVAL;
     checkDetect();
     fill_arrays();
-    print_all2();
+    //print_all2();
  
    
     
@@ -109,7 +109,7 @@ void fill_arrays()
      }
      if(cm5 < ALLOWED_DISTANCE)
      {
-       cm4_array[counter] = cm5;
+       cm5_array[counter] = cm5;
      }
      if (counter < ARRAY_LENGTH)
        counter = counter + 1;
@@ -180,137 +180,198 @@ void echoCheck()
 }
 void print_all()
 {
-//  int number_values = 0;
-//  String ss;
-//  //second sensor
-//  for(number_values = 0; number_values < 20; number_values++)
-//  {
-//    ss = ss + String(cm2_array[number_values]) + ",";
-//    cm2_array[number_values] = 0;
-//  }
-//  ss = ss + ";";
-//  //third sensor
-//  for(number_values = 0; number_values < 20; number_values++)
-//  {
-//    ss = ss + String(cm3_array[number_values]) + ",";
-//    cm3_array[number_values] = 0;
-//
-//  }
-//  ss = ss + ";";
-//  for(number_values = 0; number_values < 20; number_values++)
-//  {
-//    ss = ss +  String(cm4_array[number_values]) + ",";
-//    cm4_array[number_values] = 0;
-//  }
-//  ss = ss + ";" + "\n";
-//  Serial.print(ss);
-
   int number_values = 0;
   String ss;
-  Serial.print("STG");
+  int padding = 0;
   
   //second sensor
-  Serial.print("S01");
+  ss = "";
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
   {
     if (cm2_array[number_values] < 10)
-    {
-      ss = "00" + String(cm2_array[number_values]);
-      Serial.print(ss);
-      cm2_array[number_values] = 0;
-    }
+      padding = padding + 2;
     else if (cm2_array[number_values] < 100)
-    {
-      ss = "0" + String(cm2_array[number_values]);
-      Serial.print(ss);
-      cm2_array[number_values] = 0;
-    }
-    else
-    {
-      ss = String(cm2_array[number_values]);
-      Serial.print(ss);
-      cm2_array[number_values] = 0;
-    }
+      padding = padding + 1;
+      
+    ss = ss + String(cm2_array[number_values]) + ",";
+    cm2_array[number_values] = 0;
     
   }
-  Serial.print("END");
+  for (int x = 0; x < padding; x++)
+    ss = ss + "X";
+  padding = 0;
+  
+  ss = ss + "\n";
+  Serial.print(ss);
+  
   //third sensor
-  Serial.print("S02");
+  ss = "";
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
   {
     if (cm3_array[number_values] < 10)
-    {
-      ss = "00" + String(cm3_array[number_values]);
-      Serial.print(ss);
-      cm3_array[number_values] = 0;
-    }
+      padding = padding + 2;
     else if (cm3_array[number_values] < 100)
-    {
-      ss = "0" + String(cm3_array[number_values]);
-      Serial.print(ss);
-      cm3_array[number_values] = 0;
-    }
-    else
-    {
-      ss = String(cm3_array[number_values]);
-      Serial.print(ss);
-      cm3_array[number_values] = 0;
-    }
-    
+      padding = padding + 1;
+      
+    ss = ss + String(cm3_array[number_values]) + ",";
+    cm3_array[number_values] = 0;
+
   }
-  Serial.print("END");
+  for (int x = 0; x < padding; x++)
+    ss = ss + "X";
+  padding = 0;
+  
+  ss = ss + "\n";
+  Serial.print(ss);
+  
+  
   //fourth sensor
-  Serial.print("S03");
+  ss = "";
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
   {
     if (cm4_array[number_values] < 10)
-    {
-      ss = "00" + String(cm4_array[number_values]);
-      Serial.print(ss);
-      cm4_array[number_values] = 0;
-    }
+      padding = padding + 2;
     else if (cm4_array[number_values] < 100)
-    {
-      ss = "0" + String(cm4_array[number_values]);
-      Serial.print(ss);
-      cm4_array[number_values] = 0;
-    }
-    else
-    {
-      ss = String(cm4_array[number_values]);
-      Serial.print(ss);
-      cm4_array[number_values] = 0;
-    }
-    
+      padding = padding + 1;
+      
+    ss = ss + String(cm4_array[number_values]) + ",";
+    cm4_array[number_values] = 0;
   }
-  Serial.print("END");
+  for (int x = 0; x < padding; x++)
+    ss = ss + "X";
+  padding = 0;
+  
+  ss = ss + "\n";
+  Serial.print(ss);
+  
   //fifth sensor
-  Serial.print("S04");
+  ss = "";
   for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
   {
     if (cm5_array[number_values] < 10)
-    {
-      ss = "00" + String(cm5_array[number_values]);
-      Serial.print(ss);
-      cm5_array[number_values] = 0;
-    }
+      padding = padding + 2;
     else if (cm5_array[number_values] < 100)
-    {
-      ss = "0" + String(cm5_array[number_values]);
-      Serial.print(ss);
-      cm5_array[number_values] = 0;
-    }
-    else
-    {
-      ss = String(cm5_array[number_values]);
-      Serial.print(ss);
-      cm5_array[number_values] = 0;
-    }
-    
+      padding = padding + 1;
+      
+    ss = ss + String(cm5_array[number_values]) + ",";
+    cm5_array[number_values] = 0;
   }
-  Serial.print("END");
-  Serial.print("ENG");
-   
+  for (int x = 0; x < padding; x++)
+    ss = ss + "X";
+  padding = 0;
+  
+  ss = ss + "\n";
+  Serial.print(ss);
+  
+
+
+
+//  int number_values = 0;
+//  String ss;
+//  Serial.print("STG");
+//  
+//  //second sensor
+//  Serial.print("S01");
+//  for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
+//  {
+//    if (cm2_array[number_values] < 10)
+//    {
+//      ss = "00" + String(cm2_array[number_values]);
+//      Serial.print(ss);
+//      cm2_array[number_values] = 0;
+//    }
+//    else if (cm2_array[number_values] < 100)
+//    {
+//      ss = "0" + String(cm2_array[number_values]);
+//      Serial.print(ss);
+//      cm2_array[number_values] = 0;
+//    }
+//    else
+//    {
+//      ss = String(cm2_array[number_values]);
+//      Serial.print(ss);
+//      cm2_array[number_values] = 0;
+//    }
+//    
+//  }
+//  Serial.print("END");
+//  //third sensor
+//  Serial.print("S02");
+//  for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
+//  {
+//    if (cm3_array[number_values] < 10)
+//    {
+//      ss = "00" + String(cm3_array[number_values]);
+//      Serial.print(ss);
+//      cm3_array[number_values] = 0;
+//    }
+//    else if (cm3_array[number_values] < 100)
+//    {
+//      ss = "0" + String(cm3_array[number_values]);
+//      Serial.print(ss);
+//      cm3_array[number_values] = 0;
+//    }
+//    else
+//    {
+//      ss = String(cm3_array[number_values]);
+//      Serial.print(ss);
+//      cm3_array[number_values] = 0;
+//    }
+//    
+//  }
+//  Serial.print("END");
+//  //fourth sensor
+//  Serial.print("S03");
+//  for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
+//  {
+//    if (cm4_array[number_values] < 10)
+//    {
+//      ss = "00" + String(cm4_array[number_values]);
+//      Serial.print(ss);
+//      cm4_array[number_values] = 0;
+//    }
+//    else if (cm4_array[number_values] < 100)
+//    {
+//      ss = "0" + String(cm4_array[number_values]);
+//      Serial.print(ss);
+//      cm4_array[number_values] = 0;
+//    }
+//    else
+//    {
+//      ss = String(cm4_array[number_values]);
+//      Serial.print(ss);
+//      cm4_array[number_values] = 0;
+//    }
+//    
+//  }
+//  Serial.print("END");
+//  //fifth sensor
+//  Serial.print("S04");
+//  for(number_values = 0; number_values < ARRAY_LENGTH; number_values++)
+//  {
+//    if (cm5_array[number_values] < 10)
+//    {
+//      ss = "00" + String(cm5_array[number_values]);
+//      Serial.print(ss);
+//      cm5_array[number_values] = 0;
+//    }
+//    else if (cm5_array[number_values] < 100)
+//    {
+//      ss = "0" + String(cm5_array[number_values]);
+//      Serial.print(ss);
+//      cm5_array[number_values] = 0;
+//    }
+//    else
+//    {
+//      ss = String(cm5_array[number_values]);
+//      Serial.print(ss);
+//      cm5_array[number_values] = 0;
+//    }
+//    
+//  }
+//  Serial.print("END");
+//  Serial.print("ENG");
+//   
 }
 void print_all2()
 {
