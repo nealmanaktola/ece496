@@ -23,7 +23,7 @@ Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 
 //Dynamic Time Warping test with Random Vectors
 
-int FindGesture(int left_sensor[20], int right_sensor[20], int down_sensor[20], int up_sensor[20])
+int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])
 {
 	int length = FindLength(left_sensor, right_sensor, down_sensor, up_sensor);
 	int gesture_number = -1;
@@ -87,7 +87,7 @@ int FindGesture(int left_sensor[20], int right_sensor[20], int down_sensor[20], 
 	
 	std::cout << "identified gesture " << gesture_number << std::endl;
 
-	std::cin.get(); //TO KEEP CONSOLE OPEN
+	//std::cin.get(); //TO KEEP CONSOLE OPEN
 	return 0;
 }
 
@@ -195,14 +195,14 @@ void print_gesture(Gesture input)
 
 }
 
-int FindLength(int left_sensor[20], int right_sensor[20], int down_sensor[20], int up_sensor[20])
+int FindLength(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])
 {
 	bool first;
 	bool second;
 	bool third;
 	bool fourth;
 
-	for (int x = 0; x < 18; x++)
+	for (int x = 0; x < 27; x++)
 	{
 		//if three 0s in a row, return index where zero starts
 		first = (left_sensor[x] == 200) && (right_sensor[x] == 200) && (down_sensor[x] == 200) && (up_sensor[x] == 200);
@@ -213,6 +213,8 @@ int FindLength(int left_sensor[20], int right_sensor[20], int down_sensor[20], i
 		if (first && second && third && fourth)
 		{
 			std::cout << "length is" << x << std::endl;
+			if (x == 0)
+				x = 1;
 			return x;
 		}
 		

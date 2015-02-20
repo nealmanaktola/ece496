@@ -6,7 +6,7 @@
 #include <string>
 
 
-#define MAX_LEN 120 * 4
+#define MAX_LEN 121 * 4
 
 
 class SensorParser {
@@ -31,7 +31,7 @@ public:
 			size_t i_pos = 0;
 
 			//Remove Padding 
-			if ((i_pos = allSensorStream.find("x")) != std::string::npos)
+			if ((i_pos = allSensorStream.find("X")) != std::string::npos)
 				sensorStream = sensorStream.substr(0, i_pos);
 			
 			//Parse out numbers and add it to array
@@ -39,6 +39,10 @@ public:
 			while ((i_pos = sensorStream.find(",")) != std::string::npos)
 			{
 				int num = atoi((sensorStream.substr(0, i_pos)).c_str());
+
+				if (num == 0)
+					num = 200;
+	
 				sensorValues[i][j] = num;
 				sensorStream.erase(0, i_pos + 1);
 				j++;
@@ -67,13 +71,13 @@ public:
 				sensorStream = sensorStream + in;
 			}
 		}
-		
+		std::cout << sensorStream;
 		int ** sensorValues = new int *[4];
 		for (int i = 0; i < 4; i++)
 		{
 			sensorValues[i] = new int[30];
 		}
-		parseSensorStream(sensorStream, sensorValues);
+parseSensorStream(sensorStream, sensorValues);
 		return sensorValues;
 	}
 	
