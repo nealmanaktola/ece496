@@ -41,7 +41,7 @@ NewPing sonar5 = NewPing(11,MAX_DISTANCE);
 
 void setup()
 {
-	Serial.begin(9600);
+	Serial.begin(115200);
 
 	pingTimer = millis() + 75;           // First ping starts at 75ms, gives time for the Arduino to chill before starting 
 
