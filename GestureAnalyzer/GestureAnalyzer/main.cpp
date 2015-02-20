@@ -10,12 +10,31 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	
 	SensorParser parser("\\\\.\\COM3");
-	std::vector<int *> sensorValues;
+
 
 	
 	while (true)
 	{
-		parser.readData(sensorValues);
+		int ** sensorValues = parser.readData();
+		
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 30; j++)
+			{
+				std::cout << sensorValues[i][j] << ",";
+			}
+			std::cout << std::endl;
+		}
+		 
+		std::cout << std::endl;
+		std::cout << std::endl;
+
+		for (int i = 0; i < 4; i++)
+		{
+			delete[] sensorValues[i];
+		}
+
+		delete[] sensorValues;
 	}
 
 	/*

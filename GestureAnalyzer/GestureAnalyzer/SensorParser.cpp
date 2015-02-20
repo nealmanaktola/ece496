@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#define MAX_LEN 79 * 4
+#define MAX_LEN 80 * 4
 
 class SensorParser {
 private:
@@ -19,8 +19,34 @@ public:
 			std::cout << "Not connected" << std::endl;
 	};
 
+	void parseSensorStream(std::string allSensorStream, int ** sensorValues)
+	{
+		size_t pos = 0;
+		int i = 0;
 
-	bool readData(std::vector<int *>& sensorValues)
+		while ((pos = allSensorStream.find("\n")) != std::string::npos) {
+			std::string sensorStream = allSensorStream.substr(0, pos);
+			size_t i_pos = 0;
+
+			//Remove Padding 
+			if ((i_pos = allSensorStream.find("x")) != std::string::npos)
+				sensorStream = sensorStream.substr(0, i_pos);
+			
+			//Parse out numbers and add it to array
+			int j = 0;
+			while ((i_pos = sensorStream.find(",")) != std::string::npos)
+			{
+				int num = atoi((sensorStream.substr(0, i_pos)).c_str());
+				sensorValues[i][j] = num;
+				sensorStream.erase(0, i_pos + 1);
+				j++;
+			}
+
+			i++;
+			allSensorStream.erase(0, pos + 1);
+		}
+	}
+	int** readData()
 	{
 		char in[MAX_LEN + 1];
 
@@ -39,10 +65,14 @@ public:
 				sensorStream = sensorStream + in;
 			}
 		}
-
-		std::cout << sensorStream;
-		std::cout << std::endl;
-
+		
+		int ** sensorValues = new int *[4];
+		for (int i = 0; i < 4; i++)
+		{
+			sensorValues[i] = new int[30];
+		}
+		parseSensorStream(sensorStream, sensorValues);
+		return sensorValues;
 	}
 	
 };
