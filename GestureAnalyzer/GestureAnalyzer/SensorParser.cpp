@@ -3,8 +3,9 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <string>
 
-#define MAX_LEN 3
+#define MAX_LEN 79 * 4
 
 class SensorParser {
 private:
@@ -18,62 +19,30 @@ public:
 			std::cout << "Not connected" << std::endl;
 	};
 
-	int * readSensorValues()
-	{
-		char in[MAX_LEN];
-		int numBytes;
-		int* valueList = new int[30];
-		int i = 0;
-		while (true)
-		{
-			if ((numBytes = m_sp->ReadData(in, MAX_LEN)) != -1)
-			{
-				if (!strncmp("END", in,3))
-				{
-					break;
-				}
-				else
-				{
-					int val = atoi(in);
-					valueList[i] = val;
-					i++;
-				}
-			}
 
-		}
-		return valueList;
-	}
 	bool readData(std::vector<int *>& sensorValues)
 	{
-		char in[MAX_LEN];
-		int numBytes;
+		char in[MAX_LEN + 1];
 
-		//New Gesture if STG;
-		if ((numBytes = m_sp->ReadData(in, MAX_LEN) != -1) && !(strncmp(in, "STG", MAX_LEN)))
+		int bytes_read = 0;
+
+		std::string sensorStream;
+
+		while (bytes_read < MAX_LEN)
 		{
-			while (true)
+			int numBytes = m_sp->ReadData(in, MAX_LEN-bytes_read);
+			
+			if (numBytes != -1)
 			{
-				if ((numBytes = m_sp->ReadData(in, MAX_LEN)) != -1)
-				{
-					if (!strncmp("S0", in,2))
-					{
-						int * sensorValueList = readSensorValues();
-						sensorValues.push_back(sensorValueList);
-
-					}
-					else if (!strncmp("ENG", in,3))
-					{
-						break;
-					}
-
-				}
-
+				bytes_read += numBytes;
+				in[numBytes] = '\0';
+				sensorStream = sensorStream + in;
 			}
-			return true;
 		}
-		return false;
+
+		std::cout << sensorStream;
+		std::cout << std::endl;
+
 	}
-
-
-
+	
 };

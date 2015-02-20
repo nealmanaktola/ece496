@@ -9,26 +9,13 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 	
-	SensorParser parser("\\\\.\\COM4");
+	SensorParser parser("\\\\.\\COM3");
 	std::vector<int *> sensorValues;
 
 	
 	while (true)
 	{
-		bool isValid = parser.readData(sensorValues);
-
-		if (isValid)
-		{
-			for (int i = 0; i < sensorValues.size(); i++)
-			{
-				for (int j = 0; j < 30; j++)
-				{
-					std::cout << sensorValues[i][j] << ",";
-				}
-				printf("\n");
-			}
-
-		}
+		parser.readData(sensorValues);
 	}
 
 	/*
