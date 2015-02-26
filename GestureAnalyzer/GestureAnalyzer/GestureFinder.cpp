@@ -15,16 +15,18 @@ Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 };
 */
 
-/* TODO: Store normalized gestures in a file */
-Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
-	{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 } }, // LEFT TO RIGHT SWIPE
-	{ { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 } } // RIGHT TO LEFT SWIPE
-};
+
 
 //Dynamic Time Warping test with Random Vectors
 
 int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])
 {
+	/* TODO: Store normalized gestures in a file */
+	Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
+		{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 } }, // LEFT TO RIGHT SWIPE
+		{ { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 } } // RIGHT TO LEFT SWIPE
+	};
+
 	int length = FindLength(left_sensor, right_sensor, down_sensor, up_sensor);
 	int gesture_number = -1;
 	bool isSimilar;
@@ -33,6 +35,12 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	int previous_score = INFINITY;
 	std::vector<GestureScore> all_gestures;
 	int dtw_score[4];
+
+	//error correction for input values
+	fixInput(left_sensor, length);
+	fixInput(right_sensor, length);
+	fixInput(down_sensor, length);
+	fixInput(up_sensor, length);
 
 	//normalize values
 	normalize(left_sensor, length);
@@ -44,10 +52,10 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	//normalize stored values
 	for (int x = 0; x < NUMBER_OF_GESTURES; x++)
 	{
-		normalize(Stored_Gestures[x].LeftSensor, length);
-		normalize(Stored_Gestures[x].RightSensor, length);
-		normalize(Stored_Gestures[x].DownSensor, length);
-		normalize(Stored_Gestures[x].UpSensor, length);
+		normalize(Stored_Gestures[x].LeftSensor, 10);
+		normalize(Stored_Gestures[x].RightSensor, 10);
+		normalize(Stored_Gestures[x].DownSensor, 10);
+		normalize(Stored_Gestures[x].UpSensor, 10);
 	}
 
 	int max_majority = 0;
@@ -55,7 +63,16 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	for (int x = 0; x < NUMBER_OF_GESTURES; x++)
 	{
 		print_array("left_sensor", left_sensor, length);
-		print_array("left_sensor_actual", Stored_Gestures[x].LeftSensor, 10);
+		print_array("left_sensor_stored", Stored_Gestures[x].LeftSensor, 10);
+
+		print_array("right_sensor", right_sensor, length);
+		print_array("right_sensor_stored", Stored_Gestures[x].RightSensor, 10);
+
+		print_array("down_sensor", down_sensor, length);
+		print_array("down_sensor_stored", Stored_Gestures[x].DownSensor, 10);
+
+		print_array("up_sensor", up_sensor, length);
+		print_array("up_sensor_stored", Stored_Gestures[x].UpSensor, 10);
 
 		dtw_score[0] = dtw(left_sensor, Stored_Gestures[x].LeftSensor, length, 10);
 		dtw_score[1] = dtw(right_sensor, Stored_Gestures[x].RightSensor, length, 10);
@@ -64,6 +81,7 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 
 		GestureScore gs;
 		/*TODO: add majority function*/
+
 		gs.majority = (dtw_score[0] < SCORE_THRESHOLD) + (dtw_score[1] < SCORE_THRESHOLD) + (dtw_score[2] < SCORE_THRESHOLD) + (dtw_score[3] < SCORE_THRESHOLD);
 		gs.score = dtw_score[0] + dtw_score[1] + dtw_score[2] + dtw_score[3];		
 		gs.gid = x;
@@ -86,6 +104,7 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	}
 	
 	std::cout << "identified gesture " << gesture_number << std::endl;
+	std::cout << std::endl << std::endl;
 
 	//std::cin.get(); //TO KEEP CONSOLE OPEN
 	return 0;
@@ -102,7 +121,15 @@ int minimum(int x, int y, int z)
 		return z;
 
 }
-
+void fixInput(int* arr, int n)
+{
+	for (int x = 1; x < n - 1; x++)
+	{
+		// if numbers of both side of current element is not 200, it is probably an error
+		if ((arr[x + 1] != 200 || arr[x - 1] != 200) && arr[x] == 200)
+			arr[x] = arr[x - 1];
+	}
+}
 int* normalize(int* arr, int n)
 {
 	int i;
@@ -116,8 +143,6 @@ int* normalize(int* arr, int n)
 		
 		}
 	}
-
-	std::cout << min << std::endl;
 
 	for (i = 0; i < n; i++)
 	{
@@ -212,7 +237,6 @@ int FindLength(int left_sensor[30], int right_sensor[30], int down_sensor[30], i
 
 		if (first && second && third && fourth)
 		{
-			std::cout << "length is" << x << std::endl;
 			if (x == 0)
 				x = 1;
 			return x;
@@ -221,3 +245,4 @@ int FindLength(int left_sensor[30], int right_sensor[30], int down_sensor[30], i
 	}
 
 }
+

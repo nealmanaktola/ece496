@@ -25,6 +25,7 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 void print_gesture(Gesture input);
 int FindLength(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30]);
 void delete_2d_array(int** x, int n);
+void fixInput(int* arr, int n);
 
 
 #endif 

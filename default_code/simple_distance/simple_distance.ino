@@ -1,5 +1,5 @@
-int trigPin = 9;    //Trig - green Jumper
-int echoPin = 10;    //Echo - yellow Jumper
+int trigPin = 7;    //Trig - green Jumper
+int echoPin = 8;    //Echo - yellow Jumper
 long duration, cm, inches;
 volatile int start = 1;
 volatile int counter = 0;
@@ -35,33 +35,35 @@ void loop()
   cm = (duration/2) / 29.1;
  
    
-  
-  if (cm < 60)
-  {
-    //Serial.print(cm);
-    //Serial.print(",");
-    num++;
-    if (start  == 0)
-      start = 1;    
-  }
-  else
-  {
-    if (start >= 1)
-      start++;
-    if (start == 3)
-    {
-//      Serial.print(num);
-//      Serial.println();
-//      Serial.print("Run ");
-//      Serial.print(counter);
-//      Serial.print(":");
-      Serial.print("Swipe");
-      start = 0;
-      num = 0;
-      counter++;
-    }
-  }  
- 
+   Serial.print(cm);
+   Serial.println();
+//  
+//  if (cm < 60)
+//  {
+//    //Serial.print(cm);
+//    //Serial.print(",");
+//    num++;
+//    if (start  == 0)
+//      start = 1;    
+//  }
+//  else
+//  {
+//    if (start >= 1)
+//      start++;
+//    if (start == 3)
+//    {
+////      Serial.print(num);
+////      Serial.println();
+////      Serial.print("Run ");
+////      Serial.print(counter);
+////      Serial.print(":");
+//      Serial.print("Swipe");
+//      start = 0;
+//      num = 0;
+//      counter++;
+//    }
+//  }  
+// 
   
   delay(20);
 }

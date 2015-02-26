@@ -29,7 +29,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		std::cout << std::endl;
 		std::cout << std::endl;
 
-		//int gesture = FindGesture(sensorValues[0], sensorValues[1], sensorValues[2], sensorValues[3]);
+		int gesture = FindGesture(sensorValues[0], sensorValues[1], sensorValues[2], sensorValues[3]);
 		for (int i = 0; i < 4; i++)
 		{
 			delete[] sensorValues[i];
