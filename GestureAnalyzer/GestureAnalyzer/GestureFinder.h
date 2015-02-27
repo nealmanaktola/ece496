@@ -1,14 +1,15 @@
 #ifndef __GESTURE_FINDER__  
 #define __GESTURE_FINDER__   
-#define NUMBER_OF_GESTURES 2
+
 
 
 struct Gesture
 {
-	int LeftSensor[10];
-	int RightSensor[10];
-	int DownSensor[10];
-	int UpSensor[10];
+	int LeftSensor[20];
+	int RightSensor[20];
+	int DownSensor[20];
+	int UpSensor[20];
+	int length;
 };
 struct GestureScore
 {

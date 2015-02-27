@@ -6,7 +6,8 @@
 #include "GestureFinder.h"
 #include <iostream>
 #define INFINITY 1 << 25;
-#define SCORE_THRESHOLD 500
+#define SCORE_THRESHOLD 2000
+#define NUMBER_OF_GESTURES 5
 
 /*
 Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
@@ -23,9 +24,14 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 {
 	/* TODO: Store normalized gestures in a file */
 	Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
-		{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 } }, // LEFT TO RIGHT SWIPE
-		{ { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 } } // RIGHT TO LEFT SWIPE
+		{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // LEFT TO RIGHT SWIPE
+		{ { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // RIGHT TO LEFT SWIPE
+		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, 10 }, //DOWN TO UP SWIPE
+		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, 10 }, // UP TO DOWN SWIPE
+		{ { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, 18 } // up Z dierection
 	};
+
+
 
 	int length = FindLength(left_sensor, right_sensor, down_sensor, up_sensor);
 	int gesture_number = -1;
@@ -52,10 +58,10 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	//normalize stored values
 	for (int x = 0; x < NUMBER_OF_GESTURES; x++)
 	{
-		normalize(Stored_Gestures[x].LeftSensor, 10);
-		normalize(Stored_Gestures[x].RightSensor, 10);
-		normalize(Stored_Gestures[x].DownSensor, 10);
-		normalize(Stored_Gestures[x].UpSensor, 10);
+		normalize(Stored_Gestures[x].LeftSensor, Stored_Gestures[x].length);
+		normalize(Stored_Gestures[x].RightSensor, Stored_Gestures[x].length);
+		normalize(Stored_Gestures[x].DownSensor, Stored_Gestures[x].length);
+		normalize(Stored_Gestures[x].UpSensor, Stored_Gestures[x].length);
 	}
 
 	int max_majority = 0;
@@ -63,21 +69,21 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	for (int x = 0; x < NUMBER_OF_GESTURES; x++)
 	{
 		print_array("left_sensor", left_sensor, length);
-		print_array("left_sensor_stored", Stored_Gestures[x].LeftSensor, 10);
+		print_array("left_sensor_stored", Stored_Gestures[x].LeftSensor, Stored_Gestures[x].length);
 
 		print_array("right_sensor", right_sensor, length);
-		print_array("right_sensor_stored", Stored_Gestures[x].RightSensor, 10);
+		print_array("right_sensor_stored", Stored_Gestures[x].RightSensor, Stored_Gestures[x].length);
 
 		print_array("down_sensor", down_sensor, length);
-		print_array("down_sensor_stored", Stored_Gestures[x].DownSensor, 10);
+		print_array("down_sensor_stored", Stored_Gestures[x].DownSensor, Stored_Gestures[x].length);
 
 		print_array("up_sensor", up_sensor, length);
-		print_array("up_sensor_stored", Stored_Gestures[x].UpSensor, 10);
+		print_array("up_sensor_stored", Stored_Gestures[x].UpSensor, Stored_Gestures[x].length);
 
-		dtw_score[0] = dtw(left_sensor, Stored_Gestures[x].LeftSensor, length, 10);
-		dtw_score[1] = dtw(right_sensor, Stored_Gestures[x].RightSensor, length, 10);
-		dtw_score[2] = dtw(down_sensor, Stored_Gestures[x].DownSensor, length, 10);
-		dtw_score[3] = dtw(up_sensor, Stored_Gestures[x].UpSensor, length, 10);
+		dtw_score[0] = dtw(left_sensor, Stored_Gestures[x].LeftSensor, length, Stored_Gestures[x].length);
+		dtw_score[1] = dtw(right_sensor, Stored_Gestures[x].RightSensor, length, Stored_Gestures[x].length);
+		dtw_score[2] = dtw(down_sensor, Stored_Gestures[x].DownSensor, length, Stored_Gestures[x].length);
+		dtw_score[3] = dtw(up_sensor, Stored_Gestures[x].UpSensor, length, Stored_Gestures[x].length);
 
 		GestureScore gs;
 		/*TODO: add majority function*/
@@ -135,7 +141,7 @@ int* normalize(int* arr, int n)
 	int i;
 	int min = INFINITY;
 	//Find nonzero min
-	for (i = 1; i < n; i++)
+	for (i = 0; i < n; i++) // why was this array i = 1?
 	{
 		if (arr[i] && (arr[i] < min))
 		{
@@ -210,14 +216,6 @@ void print_array(char* name, int* x, int n)
 		printf("%d,", x[i]);
 	}
 	printf("\n");
-}
-void print_gesture(Gesture input)
-{
-	print_array("left", input.LeftSensor, 10);
-	print_array("right", input.RightSensor, 10);
-	print_array("down", input.DownSensor, 10);
-	print_array("down", input.DownSensor, 10);
-
 }
 
 int FindLength(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])
