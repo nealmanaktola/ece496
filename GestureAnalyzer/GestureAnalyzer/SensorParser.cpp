@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include "Common.h"
 
 #define MAX_LEN 121 * 4
 
@@ -13,7 +13,7 @@ class SensorParser {
 private:
 	Serial* m_sp;
 public:
-	SensorParser();
+	SensorParser() {};
 	SensorParser(char* comPort)
 	{
 		m_sp = new Serial(comPort);
@@ -71,7 +71,7 @@ public:
 				sensorStream = sensorStream + in;
 			}
 		}
-		std::cout << sensorStream;
+
 		int ** sensorValues = new int *[4];
 		for (int i = 0; i < 4; i++)
 		{

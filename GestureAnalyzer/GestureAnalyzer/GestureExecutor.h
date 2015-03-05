@@ -4,10 +4,11 @@
 
 class GestureExecutor {
 private:
-	static void swipeLeftRight(int dir);
-	static void swipeUpDown(int dir);
+	 void swipeLeftRight();
+	 void zoom();
+	 void swipeUpDown(int dir);
 public:
-	static void execute(int gid, int dir);
+	 void execute(int gid);
 
 };
 
