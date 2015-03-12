@@ -10,3 +10,5 @@
 *.tlog
 *.pch
 *.suo
+*.sdf
+GestureAnalyzer/GestureAnalyzer.sdf

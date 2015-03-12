@@ -4,10 +4,12 @@
 #include <stdbool.h>
 #include <vector>
 #include "GestureFinder.h"
+#include "Common.h"
 #include <iostream>
-#define INFINITY 1 << 25;
-#define SCORE_THRESHOLD 2000
-#define NUMBER_OF_GESTURES 5
+#define INFINITY 1 << 25
+#define SCORE_THRESHOLD 1000
+#define NUMBER_OF_GESTURES 6
+//#define NUMBER_OF_GESTURES 6
 
 /*
 Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
@@ -23,15 +25,23 @@ Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])
 {
 	/* TODO: Store normalized gestures in a file */
+
 	Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 		{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // LEFT TO RIGHT SWIPE
 		{ { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // RIGHT TO LEFT SWIPE
 		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, 10 }, //DOWN TO UP SWIPE
 		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, 10 }, // UP TO DOWN SWIPE
-		{ { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, 18 } // up Z dierection
+		{ { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, 18 }, // up Z dierection
+		{ { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, 18 } // down Z dierection
 	};
 
-
+	/*
+	Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
+		{ { 0, 0, 0, 0, 0, 184 }, { 183, 183, 2, 0, 1, 4 }, { 185, 1, 0, 5, 5, 185 }, { 183, 6, 0, 1, 3, 183 }, 6	 }, //LEFT-RIGHT
+		{ { 179, 179, 179, 4, 4, 0 }, { 2, 2, 0, 0, 2, 180 }, { 179, 179, 2, 0, 0, 179 }, { 178, 178, 3, 0, 1, 0 }, 6 }, //RIGHT-LEFT
+		{{ 167, 167, 0, 0, 0, 0, 167, }, { 183, 16, 2, 0, 2, 2, 183, }, { 1, 0, 6, 0, 0, 0, 185 }, { 184, 4, 4, 0, 2, 0, 0 }, 7 } //DOWN-UP
+	};
+	*/
 
 	int length = FindLength(left_sensor, right_sensor, down_sensor, up_sensor);
 	int gesture_number = -1;
@@ -56,31 +66,21 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 
 	/*TODO: Remove this normalization, as it will be already normalized in file*/
 	//normalize stored values
-	for (int x = 0; x < NUMBER_OF_GESTURES; x++)
+	
+	for (int x = 0; x < (NUMBER_OF_GESTURES); x++)
 	{
 		normalize(Stored_Gestures[x].LeftSensor, Stored_Gestures[x].length);
 		normalize(Stored_Gestures[x].RightSensor, Stored_Gestures[x].length);
 		normalize(Stored_Gestures[x].DownSensor, Stored_Gestures[x].length);
 		normalize(Stored_Gestures[x].UpSensor, Stored_Gestures[x].length);
 	}
-
+	
 	int max_majority = 0;
+
 
 	for (int x = 0; x < NUMBER_OF_GESTURES; x++)
 	{
-		/*
-		print_array("left_sensor", left_sensor, length);
-		print_array("left_sensor_stored", Stored_Gestures[x].LeftSensor, Stored_Gestures[x].length);
 
-		print_array("right_sensor", right_sensor, length);
-		print_array("right_sensor_stored", Stored_Gestures[x].RightSensor, Stored_Gestures[x].length);
-
-		print_array("down_sensor", down_sensor, length);
-		print_array("down_sensor_stored", Stored_Gestures[x].DownSensor, Stored_Gestures[x].length);
-
-		print_array("up_sensor", up_sensor, length);
-		print_array("up_sensor_stored", Stored_Gestures[x].UpSensor, Stored_Gestures[x].length);
-		*/
 		dtw_score[0] = dtw(left_sensor, Stored_Gestures[x].LeftSensor, length, Stored_Gestures[x].length);
 		dtw_score[1] = dtw(right_sensor, Stored_Gestures[x].RightSensor, length, Stored_Gestures[x].length);
 		dtw_score[2] = dtw(down_sensor, Stored_Gestures[x].DownSensor, length, Stored_Gestures[x].length);
@@ -90,7 +90,8 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 		/*TODO: add majority function*/
 
 		gs.majority = (dtw_score[0] < SCORE_THRESHOLD) + (dtw_score[1] < SCORE_THRESHOLD) + (dtw_score[2] < SCORE_THRESHOLD) + (dtw_score[3] < SCORE_THRESHOLD);
-		gs.score = dtw_score[0] + dtw_score[1] + dtw_score[2] + dtw_score[3];		
+		gs.score = dtw_score[0] + dtw_score[1] + dtw_score[2] + dtw_score[3];	
+		DEBUG(("GESTURE: %s distance %d %d %d %d %d\n", gestureDescription[x], dtw_score[0], dtw_score[1],dtw_score[2],dtw_score[3], gs.score));
 		gs.gid = x;
 		if (gs.majority > max_majority)
 		{
@@ -109,12 +110,14 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 			if (all_gestures[x].score < min_distance)
 				gesture_number = all_gestures[x].gid;
 	}
-	
-	std::cout << "identified gesture " << gesture_number << std::endl;
-	std::cout << std::endl << std::endl;
-
+	if (gesture_number != -1)
+	{
+		DEBUG(("IDENTIFIED: %s\n\n", gestureDescription[gesture_number]));
+	}
+	else
+		DEBUG(("IDENTIFIED: GESTURE NOT FOUND\n\n"));
 	//std::cin.get(); //TO KEEP CONSOLE OPEN
-	return 0;
+	return gesture_number;
 }
 
 int minimum(int x, int y, int z)
@@ -196,7 +199,11 @@ int dtw(int *x, int *y, int n, int m)
 			distance[i][j] = cost + minimum(distance[i - 1][j], distance[i][j - 1], distance[i - 1][j - 1]);
 		}
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> origin/master
 	//printf("minimum distance %d\n", distance[n - 1][m - 1]);
 
 	int min = distance[n - 1][m - 1];
@@ -211,12 +218,12 @@ void print_array(char* name, int* x, int n)
 {
 	int i;
 
-	printf("%s", name);
+	DEBUG(("%s", name));
 	for (i = 0; i < n; i++)
 	{
-		printf("%d,", x[i]);
+		DEBUG(("%d,", x[i]));
 	}
-	printf("\n");
+	DEBUG(("\n"));
 }
 
 int FindLength(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])

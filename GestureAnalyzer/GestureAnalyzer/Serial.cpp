@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "SerialClass.h"
+#include "Common.h"
 Serial::Serial(char *portName)
 {
 	//We're not yet connected
