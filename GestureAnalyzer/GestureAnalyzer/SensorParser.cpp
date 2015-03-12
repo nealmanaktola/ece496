@@ -71,7 +71,7 @@ public:
 				sensorStream = sensorStream + in;
 			}
 		}
-		std::cout << sensorStream;
+		//std::cout << sensorStream;
 		int ** sensorValues = new int *[4];
 		for (int i = 0; i < 4; i++)
 		{

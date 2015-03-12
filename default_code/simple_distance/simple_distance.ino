@@ -1,5 +1,5 @@
-int trigPin = 7;    //Trig - green Jumper
-int echoPin = 8;    //Echo - yellow Jumper
+int trigPin = 3;    //Trig - green Jumper
+int echoPin = 4;    //Echo - yellow Jumper
 long duration, cm, inches;
 volatile int start = 1;
 volatile int counter = 0;

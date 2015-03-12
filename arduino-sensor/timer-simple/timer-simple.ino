@@ -111,7 +111,7 @@ void fill_arrays()
      {
        cm5_array[counter] = cm5;
      }
-     if (counter < ARRAY_LENGTH)
+     if (counter < (ARRAY_LENGTH - 1))
        counter = counter + 1;
    }
     

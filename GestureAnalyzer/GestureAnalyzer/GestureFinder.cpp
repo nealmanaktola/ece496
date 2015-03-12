@@ -68,6 +68,7 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 
 	for (int x = 0; x < NUMBER_OF_GESTURES; x++)
 	{
+		/*
 		print_array("left_sensor", left_sensor, length);
 		print_array("left_sensor_stored", Stored_Gestures[x].LeftSensor, Stored_Gestures[x].length);
 
@@ -79,7 +80,7 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 
 		print_array("up_sensor", up_sensor, length);
 		print_array("up_sensor_stored", Stored_Gestures[x].UpSensor, Stored_Gestures[x].length);
-
+		*/
 		dtw_score[0] = dtw(left_sensor, Stored_Gestures[x].LeftSensor, length, Stored_Gestures[x].length);
 		dtw_score[1] = dtw(right_sensor, Stored_Gestures[x].RightSensor, length, Stored_Gestures[x].length);
 		dtw_score[2] = dtw(down_sensor, Stored_Gestures[x].DownSensor, length, Stored_Gestures[x].length);
@@ -196,7 +197,7 @@ int dtw(int *x, int *y, int n, int m)
 		}
 	}
 
-	printf("minimum distance %d\n", distance[n - 1][m - 1]);
+	//printf("minimum distance %d\n", distance[n - 1][m - 1]);
 
 	int min = distance[n - 1][m - 1];
 	

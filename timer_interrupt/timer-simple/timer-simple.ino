@@ -4,7 +4,7 @@
 
 #define SONAR_NUM 4
 #define TIMER_FREQ_US 37
-#define PING_INTERVAL 26 
+#define PING_INTERVAL 40 
 #define MAX_DISTANCE 200
 
 
@@ -26,7 +26,7 @@ volatile int trigger4 = 0;
 NewPing sonar1 = NewPing(7,6,MAX_DISTANCE);
 NewPing sonar2 = NewPing(8,MAX_DISTANCE);
 NewPing sonar3 = NewPing(9,MAX_DISTANCE);
-NewPing sonar4 = NewPing(11,MAX_DISTANCE);
+NewPing sonar4 = NewPing(10,MAX_DISTANCE);
 
 void setup()
 {
@@ -115,11 +115,22 @@ void echoCheck()
 void print_all()
 {
 
-//    Serial.print("1");
-//    Serial.print("=");
-//    Serial.print(cm1);
-//    Serial.print("    "); 
-// 
+  if (detect > 0)
+  {
+    if (cm1 < 70)
+    {
+    Serial.print("1");
+    Serial.print("=");
+    Serial.print(cm1);
+    Serial.print("    "); 
+    }
+  
+    else
+    {
+      Serial.print("        ");
+    }
+  }
+ 
   if (detect > 0)
   {
     if (cm2 < 70)

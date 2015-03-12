@@ -16,7 +16,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	while (true)
 	{
 		int ** sensorValues = parser.readData();
-		
+		/*
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 30; j++)
@@ -25,7 +25,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			std::cout << std::endl;
 		}
-		 
+		 */
 		std::cout << std::endl;
 		std::cout << std::endl;
 
