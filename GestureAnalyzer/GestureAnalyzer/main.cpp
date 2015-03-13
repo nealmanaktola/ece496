@@ -7,6 +7,8 @@
 #include "Common.h"
 #include "GestureExecutor.h"
 #include "GestureCreator.h"
+#include <time.h>
+#include <Windows.h>
 
 static const WORD MAX_CONSOLE_LINES = 500;
 void RedirectIOToConsole()
@@ -65,7 +67,7 @@ WINAPI WinMain(
     _In_ LPSTR lpCmdLine,
     _In_ int nShowCmd)
 {
-	SensorParser parser("\\\\.\\COM4");
+	SensorParser parser("\\\\.\\COM3");
 
 	RedirectIOToConsole();
 	
@@ -76,16 +78,30 @@ WINAPI WinMain(
 		GestureCreator create(parser);
 
 		//create.findReferencePattern();
-		
-		
 		int ** sensorValues = parser.readData();
 
+		LARGE_INTEGER frequency;
+		if (::QueryPerformanceFrequency(&frequency) == FALSE)
+			throw "foo";
 
+		LARGE_INTEGER start;
+		if (::QueryPerformanceCounter(&start) == FALSE)
+			throw "foo";
+		
 		int gesture = FindGesture(sensorValues[0], sensorValues[1], sensorValues[2], sensorValues[3]);
+
+		LARGE_INTEGER end;
+		if (::QueryPerformanceCounter(&end) == FALSE)
+			throw "foo";
+
+		double interval = static_cast<double>(end.QuadPart - start.QuadPart) / frequency.QuadPart;
+
+		DEBUG(("time: %f", interval));
+		
 		if (gesture != -1)
 		{
-			GestureExecutor a;
-			a.execute(gesture);
+			//GestureExecutor a;
+			//a.execute(gesture);
 		}
 		for (int i = 0; i < 4; i++)
 		{

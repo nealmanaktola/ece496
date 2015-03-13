@@ -6,6 +6,7 @@
 #include "GestureFinder.h"
 #include "Common.h"
 #include <iostream>
+
 #define INFINITY 1 << 25
 #define SCORE_THRESHOLD 1000
 #define NUMBER_OF_GESTURES 6
@@ -25,13 +26,13 @@ Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])
 {
 	/* TODO: Store normalized gestures in a file */
-
+	//std::cout << "in findgesture";
 	Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 		{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // LEFT TO RIGHT SWIPE
 		{ { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // RIGHT TO LEFT SWIPE
 		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, 10 }, //DOWN TO UP SWIPE
 		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, 10 }, // UP TO DOWN SWIPE
-		{ { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68 }, 18 }, // up Z dierection
+		{ { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68, 200 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68, 200 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68, 200 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68, 200 }, 19 }, // up Z dierection
 		{ { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, 18 } // down Z dierection
 	};
 
@@ -42,12 +43,9 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 		{{ 167, 167, 0, 0, 0, 0, 167, }, { 183, 16, 2, 0, 2, 2, 183, }, { 1, 0, 6, 0, 0, 0, 185 }, { 184, 4, 4, 0, 2, 0, 0 }, 7 } //DOWN-UP
 	};
 	*/
-
+	
 	int length = FindLength(left_sensor, right_sensor, down_sensor, up_sensor);
 	int gesture_number = -1;
-	bool isSimilar;
-	int majority;
-	int score;
 	int previous_score = INFINITY;
 	std::vector<GestureScore> all_gestures;
 	int dtw_score[4];
@@ -63,6 +61,11 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	normalize(right_sensor, length);
 	normalize(down_sensor, length);
 	normalize(up_sensor, length);
+
+	print_array("LEFT sensor", left_sensor, length);
+	print_array("RIGHT sensor", right_sensor, length);
+	print_array("DOWN sensor", down_sensor, length);
+	print_array("UP sensor", up_sensor, length);
 
 	/*TODO: Remove this normalization, as it will be already normalized in file*/
 	//normalize stored values
@@ -199,12 +202,7 @@ int dtw(int *x, int *y, int n, int m)
 			distance[i][j] = cost + minimum(distance[i - 1][j], distance[i][j - 1], distance[i - 1][j - 1]);
 		}
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> origin/master
-	//printf("minimum distance %d\n", distance[n - 1][m - 1]);
 
 	int min = distance[n - 1][m - 1];
 	

@@ -56,9 +56,6 @@
     <ClCompile Include="GestureFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GestureExecutor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GestureCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
