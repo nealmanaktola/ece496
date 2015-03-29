@@ -9,5 +9,5 @@
 #define DEBUG(args) (printf args)
 //#define DEBUG(args) 
 static char* sensorLocation[] = { "LEFT", "RIGHT", "DOWN", "UP" };
-static char* gestureDescription[] = { "LEFT-RIGHT", "RIGHT-LEFT", "DOWN-UP", "UP-DOWN", "ZOOM IN", "ZOOM OUT", "CLAMP"};
+static char* gestureDescription[] = { "LEFT-RIGHT", "RIGHT-LEFT", "DOWN-UP", "UP-DOWN", "ZOOM IN", "ZOOM OUT", "SWIPE"};
 #endif

@@ -5,10 +5,10 @@
 
 struct Gesture
 {
-	int LeftSensor[20];
-	int RightSensor[20];
-	int DownSensor[20];
-	int UpSensor[20];
+	int LeftSensor[30];
+	int RightSensor[30];
+	int DownSensor[30];
+	int UpSensor[30];
 	int length;
 };
 struct GestureScore

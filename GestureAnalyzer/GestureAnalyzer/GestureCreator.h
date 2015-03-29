@@ -2,7 +2,7 @@
 #include "SensorParser.cpp"
 #include "GestureFInder.h"
 
-#define MAX_RUNS 10
+#define MAX_RUNS 6
 struct Run {
 	int ** sensorVals;
 	int length;

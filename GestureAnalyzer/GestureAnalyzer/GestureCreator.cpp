@@ -96,10 +96,17 @@ void GestureCreator::findReferencePattern() {
 	}
 
 	DEBUG(("\nFINAL FOUND \n"));
+	printf("{ ");
 	for (int i = 0; i < 4; i++)
 	{
-		print_array(sensorLocation[i], allRuns[bestIndex][i], allRunsLength[bestIndex]);
+		//{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, 10 }, // UP TO DOWN SWIPE
+		printf("{ ");
+		for (int j = 0; j < allRunsLength[bestIndex]; j++) {
+			printf("%d,", allRuns[bestIndex][i][j]);
 
+		}
+		printf("}, ");
 	}
+	printf(" }\n");
 }
 
