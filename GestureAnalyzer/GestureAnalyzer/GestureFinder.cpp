@@ -8,9 +8,8 @@
 #include <iostream>
 
 #define INFINITY 1 << 25
-#define SCORE_THRESHOLD 1000
-#define NUMBER_OF_GESTURES 6
-//#define NUMBER_OF_GESTURES 6
+#define SCORE_THRESHOLD 2500
+#define NUMBER_OF_GESTURES 7
 
 /*
 Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
@@ -33,7 +32,8 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, 10 }, //DOWN TO UP SWIPE
 		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, 10 }, // UP TO DOWN SWIPE
 		{ { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68, 200 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68, 200 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68, 200 }, { 26, 27, 28, 29, 34, 35, 40, 41, 41, 45, 46, 49, 51, 52, 54, 58, 62, 68, 200 }, 19 }, // up Z dierection
-		{ { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, 18 } // down Z dierection
+		{ { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, 18 }, // down Z dierection
+		{ { 5, 3, 3, 2, 5, 0, 4, 7, 5, 9, 6, 6}, { 6, 6, 2, 0, 0, 5, 10, 5, 7, 6, 7, 7}, { 177, 0, 1, 0, 0, 2, 0, 1, 2, 4, 5, 174}, { 177, 0, 0, 1, 2, 5, 5, 5, 3, 5, 5, 177 }, 11 } // CLAMP
 	};
 
 	/*
@@ -55,17 +55,17 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	fixInput(right_sensor, length);
 	fixInput(down_sensor, length);
 	fixInput(up_sensor, length);
-
+	print_array("LEFT sensor", left_sensor, length);
+	print_array("RIGHT sensor", right_sensor, length);
+	print_array("DOWN sensor", down_sensor, length);
+	print_array("UP sensor", up_sensor, length);
 	//normalize values
 	normalize(left_sensor, length);
 	normalize(right_sensor, length);
 	normalize(down_sensor, length);
 	normalize(up_sensor, length);
 
-	print_array("LEFT sensor", left_sensor, length);
-	print_array("RIGHT sensor", right_sensor, length);
-	print_array("DOWN sensor", down_sensor, length);
-	print_array("UP sensor", up_sensor, length);
+
 
 	/*TODO: Remove this normalization, as it will be already normalized in file*/
 	//normalize stored values
@@ -94,9 +94,9 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 
 		gs.majority = (dtw_score[0] < SCORE_THRESHOLD) + (dtw_score[1] < SCORE_THRESHOLD) + (dtw_score[2] < SCORE_THRESHOLD) + (dtw_score[3] < SCORE_THRESHOLD);
 		gs.score = dtw_score[0] + dtw_score[1] + dtw_score[2] + dtw_score[3];	
-		DEBUG(("GESTURE: %s distance %d %d %d %d %d\n", gestureDescription[x], dtw_score[0], dtw_score[1],dtw_score[2],dtw_score[3], gs.score));
+	//	DEBUG(("GESTURE: %s distance %d %d %d %d %d\n", gestureDescription[x], dtw_score[0], dtw_score[1],dtw_score[2],dtw_score[3], gs.score));
 		gs.gid = x;
-		if (gs.majority > max_majority)
+		if (gs.majority >= max_majority)
 		{
 			max_majority = gs.majority;
 			all_gestures.push_back(gs);
@@ -110,8 +110,11 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	for (int x = 0; x < all_gestures.size(); x++)
 	{
 		if (all_gestures[x].majority == max_majority)
-			if (all_gestures[x].score < min_distance)
-				gesture_number = all_gestures[x].gid;
+		if (all_gestures[x].score < min_distance)
+		{
+			gesture_number = all_gestures[x].gid;
+			min_distance = all_gestures[x].score;
+		}
 	}
 	if (gesture_number != -1)
 	{

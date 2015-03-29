@@ -64,7 +64,7 @@ bool dtw(int *x, int *y, int n, int m)
 		}
 	}
 	
-	printf("minimum distance %d", distance[n-1][m-1]);
+	printf("minimum distance %d\n", distance[n-1][m-1]);
 	
 	return (distance[n-1][m-1] < 75);
 		
@@ -82,48 +82,44 @@ void print_array(char* name, int* x, int n)
 }
 int main(int argc, char **argv)
 {
-	//int x[] = {48,47,46,45,45,45,45,44,45,43,44,44,44,41,41,43,42,41,41,41,45,45,43}; //array x
-	// int x[] = {50,48,50,50,48,52,48,48,49,50,50,59}; //array x //FAST GESTURE
-	// int n = 12; //size of x
+	int x[] = {20,20,0,0,20,20}; //array x
+	//int x[] = {50,48,50,50,48,52,48,48,49,50,50,59}; //array x //FAST GESTURE
+	int n = 6; //size of x
 	
-	//int y[] = {50,51,47,48,47,49,46,50,51,47,46,47,47,47,53,48,49}; //array y
-	// int y[] = {46,46,46,45,45,45,46,45,46,45,46,45,46,45,45,45,46,45,45,46}; //array y // SLOW LEFT-RIGHT GESTURE
-	// int m = 20;// size of y
+	int y[] = {0,0,0,20,20,20,0,0}; //array y // SLOW LEFT-RIGHT GESTURE
+	int m = 8;// size of y
   
-  // normalize(x,n);
-	// normalize(y,m);
+  print_array("Array One: ",x,n);
+	print_array("Array Two: ",y,m);
 	
-  // print_array("array x",x,n);
-	// print_array("array y",y,m);
-	
-	// bool isSimilar = dtw(x,y,n,m);
-	
-	// if (isSimilar)
-		// printf("Similar!");
-	// else
-		// printf("Not Similar!");
-    
-
-  //int down_sensor_normal[10][10];
-	
-  int left_sensor_normal[10] = {19,17,16,17,19,0,0,0,0,0};
-  int right_sensor_normal[10] = {0,0,0,0,0,19,17,16,17,19};
-  int up_sensor_normal[10] = {0,0,19,19,19,19,19,19,0,0};
-
-  
-  int left_sensor_actual[11] = {0,0,0,0,22,24,20,24,23,26,26};
-  int right_sensor_actual[11] = {21,21,20,20,21,21,24,0,0,0};
-  int up_sensor_actual[11] = {0,20,18,21,20,22,22,0,0,0,0};
-
-  
-  bool isSimilar = dtw(left_sensor_normal,left_sensor_actual,10, 11) 
-  & dtw(right_sensor_normal,right_sensor_actual,10, 11)
-  & dtw(up_sensor_normal,up_sensor_actual,10, 11);
+	bool isSimilar = dtw(x,y,n,m);
 	
 	if (isSimilar)
 		printf("Similar!");
 	else
 		printf("Not Similar!");
+    
+
+  //int down_sensor_normal[10][10];
+	
+  // int left_sensor_normal[10] = {19,17,16,17,19,0,0,0,0,0};
+  // int right_sensor_normal[10] = {0,0,0,0,0,19,17,16,17,19};
+  // int up_sensor_normal[10] = {0,0,19,19,19,19,19,19,0,0};
+
+  
+  // int left_sensor_actual[11] = {0,0,0,0,22,24,20,24,23,26,26};
+  // int right_sensor_actual[11] = {21,21,20,20,21,21,24,0,0,0};
+  // int up_sensor_actual[11] = {0,20,18,21,20,22,22,0,0,0,0};
+
+  
+  // bool isSimilar = dtw(left_sensor_normal,left_sensor_actual,10, 11) 
+  // & dtw(right_sensor_normal,right_sensor_actual,10, 11)
+  // & dtw(up_sensor_normal,up_sensor_actual,10, 11);
+	
+	// if (isSimilar)
+		// printf("Similar!");
+	// else
+		// printf("Not Similar!");
 		
 	return 0;
 }

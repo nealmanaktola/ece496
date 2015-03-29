@@ -1,5 +1,5 @@
-int trigPin = 3;    //Trig - green Jumper
-int echoPin = 4;    //Echo - yellow Jumper
+int trigPin = 7;    //Trig - green Jumper
+int echoPin = 6;    //Echo - yellow Jumper
 long duration, cm, inches;
 volatile int start = 1;
 volatile int counter = 0;
@@ -35,6 +35,7 @@ void loop()
   cm = (duration/2) / 29.1;
  
    
+   Serial.print("Distance From Sensor: ");
    Serial.print(cm);
    Serial.println();
 //  
@@ -65,5 +66,5 @@ void loop()
 //  }  
 // 
   
-  delay(20);
+  delay(200);
 }

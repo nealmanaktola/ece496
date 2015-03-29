@@ -96,7 +96,7 @@ WINAPI WinMain(
 
 		double interval = static_cast<double>(end.QuadPart - start.QuadPart) / frequency.QuadPart;
 
-		DEBUG(("time: %f", interval));
+		DEBUG(("time: %f\n", interval));
 		
 		if (gesture != -1)
 		{
