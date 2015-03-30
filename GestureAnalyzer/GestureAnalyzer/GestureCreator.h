@@ -2,7 +2,7 @@
 #include "SensorParser.cpp"
 #include "GestureFInder.h"
 
-#define MAX_RUNS 6
+#define MAX_RUNS 3
 struct Run {
 	int ** sensorVals;
 	int length;
@@ -14,7 +14,7 @@ private:
 	SensorParser m_parser;
 public:
 	GestureCreator(SensorParser& parser);
-	void findReferencePattern();
+	void findReferencePattern(std::string gesture_name);
 
 };
 

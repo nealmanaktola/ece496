@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #define DEBUG(args) (printf args)
+#define NUMBER_OF_GESTURES 7
 //#define DEBUG(args) 
 static char* sensorLocation[] = { "LEFT", "RIGHT", "DOWN", "UP" };
 static char* gestureDescription[] = { "LEFT-RIGHT", "RIGHT-LEFT", "DOWN-UP", "UP-DOWN", "ZOOM IN", "ZOOM OUT", "SWIPE"};

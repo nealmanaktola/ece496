@@ -5,6 +5,9 @@
 #include <unordered_map>
 #include <algorithm>
 #include <map>
+#include <fstream>
+#include <iostream>
+
 
 
 GestureCreator::GestureCreator(SensorParser& parser) {
@@ -52,7 +55,7 @@ int findDistance(std::map<std::pair<int, int>, int>& distanceMap, std::vector<in
 //normalize values
 
 
-void GestureCreator::findReferencePattern() {
+void GestureCreator::findReferencePattern(std::string gesture_name) {
 	std::vector<int **> allRuns;
 	std::vector<int> allRunsLength;
 
@@ -97,16 +100,25 @@ void GestureCreator::findReferencePattern() {
 
 	DEBUG(("\nFINAL FOUND \n"));
 	printf("{ ");
+	std::fstream myfile;
+	myfile.open("gesture_numbers.txt", std::ios::app);
+
+	myfile << gesture_name << ";";
+
 	for (int i = 0; i < 4; i++)
 	{
 		//{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, 10 }, // UP TO DOWN SWIPE
 		printf("{ ");
 		for (int j = 0; j < allRunsLength[bestIndex]; j++) {
 			printf("%d,", allRuns[bestIndex][i][j]);
+			myfile << allRuns[bestIndex][i][j] << " ";
 
 		}
 		printf("}, ");
+		myfile << ";";
 	}
 	printf(" }\n");
+	myfile << "\n";
+	myfile.close();
 }
 

@@ -9,12 +9,12 @@
 
 #define INFINITY 1 << 25
 #define SCORE_THRESHOLD 2500
-#define NUMBER_OF_GESTURES 7
+
 
 
 //Dynamic Time Warping test with Random Vectors
 
-int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])
+int FindGesture(Gesture Stored_Gestures[NUMBER_OF_GESTURES], int left_sensor[30], int right_sensor[30], int down_sensor[30], int up_sensor[30])
 {
 	/* TODO: Store normalized gestures in a file */
 	//std::cout << "in findgesture";
@@ -27,7 +27,7 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 		{ { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, { 68, 62, 58, 54, 52, 51, 49, 46, 44, 41, 38, 36, 33, 31, 29, 28, 27, 26 }, 18 }, // down Z dierection
 		{ { 5, 3, 3, 2, 5, 0, 4, 7, 5, 9, 6, 6}, { 6, 6, 2, 0, 0, 5, 10, 5, 7, 6, 7, 7}, { 177, 0, 1, 0, 0, 2, 0, 1, 2, 4, 5, 174}, { 177, 0, 0, 1, 2, 5, 5, 5, 3, 5, 5, 177 }, 11 } // CLAMP
 	};*/
-	Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
+	/*Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 		{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // LEFT TO RIGHT SWIPE
 		{ { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // RIGHT TO LEFT SWIPE
 		{ { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, 10 }, //DOWN TO UP SWIPE
@@ -35,7 +35,7 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 		{ { 181, 181, 181, 0, 0, 0, 4, 4, 10, 11, 15, 19, 23, 27, 31, 40, 38, 38, 50, 55, 55, 64, 68, 181 }, { 183, 183, 183, 0, 3, 4, 4, 7, 9, 15, 15, 18, 18, 30, 30, 35, 43, 39, 49, 59, 183, 183, 183, 183 }, { 0, 1, 1, 3, 5, 6, 10, 10, 15, 16, 19, 24, 28, 33, 37, 39, 40, 50, 56, 188, 188, 188, 76, 76 }, { 183, 183, 0, 1, 183, 183, 3, 6, 11, 12, 16, 20, 24, 27, 183, 183, 44, 43, 48, 183, 183, 183, 183, 183 },24 }, //Z UP
 		{ { 37, 31, 28, 22, 18, 17, 11, 7, 4, 4, 189, 189, 0, 189, 189, 189, 189, 189, 189, 189, 189, 189 }, { 30, 24, 21, 184, 184, 184, 8, 2, 0, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184 }, { 193, 193, 31, 25, 21, 17, 16, 12, 10, 6, 3, 2, 0, 7, 2, 10, 1, 4, 6, 13, 13, 19 }, { 33, 186, 186, 20, 17, 12, 7, 6, 0, 0, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186 },22 }, //Z DOWN
 		{ { 181, 181, 3, 1, 0, 4, 3, 2, 4, 3, 5, 3, 5, 5, 8 }, { 179, 179, 179, 179, 1, 0, 2, 1, 1, 2, 1, 1, 1, 4, 4 }, { 0, 1, 0, 1, 1, 29, 4, 3, 2, 4, 4, 6, 9, 183, 183 }, { 180, 180, 180, 180, 180, 0, 0, 0, 2, 2, 3, 4, 5, 7, 180 }, 15} //SWIPE
-	};
+	};*/
 	/*
 	Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 		{ { 0, 0, 0, 0, 0, 184 }, { 183, 183, 2, 0, 1, 4 }, { 185, 1, 0, 5, 5, 185 }, { 183, 6, 0, 1, 3, 183 }, 6	 }, //LEFT-RIGHT
@@ -50,7 +50,7 @@ int FindGesture(int left_sensor[30], int right_sensor[30], int down_sensor[30], 
 	std::vector<GestureScore> all_gestures;
 	int dtw_score[4];
 
-	if (length < 4)
+	if (length < 5)
 	{
 		DEBUG(("IDENTIFIED: GESTURE NOT FOUND\n\n"));
 		return -1;
@@ -158,12 +158,12 @@ int* normalize(int* arr, int n)
 {
 	int i;
 	int min = INFINITY;
-	//Find nonzero min
-	for (i = 0; i < n; i++) // why was this array i = 1?
+
+	for (i = 0; i < n; i++) 
 	{
-		if (arr[i] && (arr[i] < min))
+		if (arr[i] < min)
 		{
-			min = arr[i]; // dont want zeroes because they have different meaning
+			min = arr[i]; 
 		
 		}
 	}
