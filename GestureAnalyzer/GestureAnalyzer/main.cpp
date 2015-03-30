@@ -11,6 +11,7 @@
 #include <iostream>
 #include <shellapi.h>
 #include "atlstr.h"
+#include "GestureExecutor.h"
 
 Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 	{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // LEFT TO RIGHT SWIPE
