@@ -4,12 +4,13 @@
 #include "SerialClass.h"
 #include "GestureFinder.h"
 #include "Common.h"
-#include "GestureExecutor.h"
 #include "GestureCreator.h"
 #include <time.h>
 #include <Windows.h>
 #include <fstream>
 #include <iostream>
+#include <shellapi.h>
+#include "atlstr.h"
 
 Gesture Stored_Gestures[NUMBER_OF_GESTURES] = {
 	{ { 19, 17, 16, 17, 19, 200, 200, 200, 200, 200 }, { 200, 200, 200, 200, 200, 19, 17, 16, 17, 19 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, { 200, 200, 19, 19, 19, 19, 19, 19, 200, 200 }, 10 }, // LEFT TO RIGHT SWIPE
@@ -136,13 +137,13 @@ void RedirectIOToConsole()
 	// point to console as well
 	std::ios::sync_with_stdio();
 }
-void GestureExecuteTest() {
-	GestureExecutor a;
-	while (true) {
-		Sleep(3000);
-		a.execute(5);
-	}
-}
+//void GestureExecuteTest() {
+//	GestureExecutor a;
+//	while (true) {
+//		Sleep(3000);
+//		a.execute(5);
+//	}
+//}
 
 int
 WINAPI WinMain(
@@ -153,27 +154,43 @@ WINAPI WinMain(
 {
 	
 
+	populate_default_values();
+
 	RedirectIOToConsole();
-	
+	SensorParser parser("\\\\.\\COM3");
 
-	SensorParser parser("\\\\.\\COM4");
 
-	while (true)
+	LPWSTR *szArglist;
+	int nArgs;
+	int i;
+
+	szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
+	if (NULL == szArglist)
 	{
+		wprintf(L"CommandLineToArgvW failed\n");
+		return 0;
+	}
+	else for (i = 0; i<nArgs; i++) printf("%d: %ws\n", i, szArglist[i]);
 
-		int mode = 1;
-		if (mode == 0)
+	int mode;
+	if (nArgs == 1)
+		mode = 0;
+	else
+	{
+		mode = _wtoi(szArglist[1]);
+	}
+
+	if (mode == 1)
+	{
+		GestureCreator create(parser);
+		std::string gesture_name = CW2A(szArglist[2]);
+
+		create.findReferencePattern(gesture_name);
+	}
+	else if (mode == 0)
+	{
+		while (true)
 		{
-
-			GestureCreator create(parser);
-			create.findReferencePattern("LEFT-RIGHT");
-
-			//populates the array of values that will be used for comparisons
-			populate_default_values(); 
-		}
-		else if (mode == 1)
-		{
-
 			int ** sensorValues = parser.readData();
 
 			LARGE_INTEGER frequency;
@@ -206,15 +223,13 @@ WINAPI WinMain(
 			}
 
 			delete[] sensorValues;
+
 		}
 	}
-	
-	/*
-	int	right_sensor_actual[20] = { 200, 200, 200, 200, 22, 24, 20, 24, 23, 26, 26, 200, 200, 200, 200, 200, 200, 200, 200, 200};
-	int left_sensor_actual[20] = { 21, 21, 20, 20, 21, 21, 24, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200 };
-	int down_sensor_actual[20] = { 200, 20, 18, 21, 20, 22, 22, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200 };
-	int up_sensor_actual[20] = { 200, 20, 18, 21, 20, 22, 22, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200 };
-	*/
+
+	// Free memory allocated for CommandLineToArgvW arguments.
+	LocalFree(szArglist);
+
 	
 	return 0;
 }
