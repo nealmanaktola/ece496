@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GestureCreator.cpp" />
+    <ClCompile Include="GestureExecutor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SensorParser.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>

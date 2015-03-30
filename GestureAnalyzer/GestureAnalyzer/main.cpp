@@ -136,6 +136,13 @@ void RedirectIOToConsole()
 	// point to console as well
 	std::ios::sync_with_stdio();
 }
+void GestureExecuteTest() {
+	GestureExecutor a;
+	while (true) {
+		Sleep(3000);
+		a.execute(5);
+	}
+}
 
 int
 WINAPI WinMain(
@@ -144,11 +151,13 @@ WINAPI WinMain(
     _In_ LPSTR lpCmdLine,
     _In_ int nShowCmd)
 {
-	SensorParser parser("\\\\.\\COM3");
+	
 
 	RedirectIOToConsole();
 	
-	
+
+	SensorParser parser("\\\\.\\COM4");
+
 	while (true)
 	{
 
@@ -185,20 +194,21 @@ WINAPI WinMain(
 
 			//DEBUG(("time: %f\n", interval));
 
-			//if (gesture != -1)
-			//{
-			//GestureExecutor a;
-			//a.execute(gesture);
-			//}
+			if (gesture != -1)
+			{
+				DEBUG(("Gestures being executed"));
+				//GestureExecutor a;
+				//a.execute(gesture);
+			}
 			for (int i = 0; i < 4; i++)
 			{
-				//delete[] sensorValues[i];
+				delete[] sensorValues[i];
 			}
 
 			delete[] sensorValues;
 		}
 	}
-
+	
 	/*
 	int	right_sensor_actual[20] = { 200, 200, 200, 200, 22, 24, 20, 24, 23, 26, 26, 200, 200, 200, 200, 200, 200, 200, 200, 200};
 	int left_sensor_actual[20] = { 21, 21, 20, 20, 21, 21, 24, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200 };
